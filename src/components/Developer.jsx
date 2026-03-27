@@ -8,6 +8,7 @@ import React, { useEffect, useRef } from 'react';
 import { useGraph } from '@react-three/fiber';
 import { useAnimations, useFBX, useGLTF } from '@react-three/drei';
 import { SkeletonUtils } from 'three-stdlib';
+import { Color } from 'three';
 
 const Developer = ({ animationName = 'idle', ...props }) => {
   const group = useRef();
@@ -36,13 +37,32 @@ const Developer = ({ animationName = 'idle', ...props }) => {
     return () => actions[animationName].fadeOut(0.5);
   }, [animationName]);
 
+  useEffect(() => {
+    // Lighten skin
+    if (materials.Wolf3D_Skin) {
+      materials.Wolf3D_Skin = materials.Wolf3D_Skin.clone();
+      materials.Wolf3D_Skin.color = new Color('#ffe0bd');
+    }
+    // Dark dramatic hair for wolf look
+    if (materials.Wolf3D_Hair) {
+      materials.Wolf3D_Hair = materials.Wolf3D_Hair.clone();
+      materials.Wolf3D_Hair.color = new Color('#0d0d0d');
+      materials.Wolf3D_Hair.roughness = 0.4;
+    }
+  }, [materials]);
+
+  // Scale hair mesh to appear more voluminous
+  const hairRef = useRef();
+
   return (
     <group ref={group} {...props} dispose={null}>
       <primitive object={nodes.Hips} />
       <skinnedMesh
+        ref={hairRef}
         geometry={nodes.Wolf3D_Hair.geometry}
         material={materials.Wolf3D_Hair}
         skeleton={nodes.Wolf3D_Hair.skeleton}
+        scale={[1.6, 2.2, 1.6]}
       />
       <skinnedMesh
         geometry={nodes.Wolf3D_Glasses.geometry}
