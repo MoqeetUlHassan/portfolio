@@ -83,7 +83,7 @@ const Hero = () => {
       {/* Intro typewriter */}
       <div
         ref={introRef}
-        className="absolute top-44 sm:top-48 left-0 z-10 opacity-0 max-w-[220px] sm:max-w-[260px] pl-4 sm:pl-6">
+        className="absolute top-44 sm:top-48 left-0 z-10 opacity-0 w-full max-w-xs sm:max-w-sm c-space">
         <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl px-5 py-4">
           <p className="text-white/85 text-xs sm:text-sm leading-relaxed font-generalsans">
             {displayed}
