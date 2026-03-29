@@ -12,6 +12,8 @@ import Developer from '../components/Developer.jsx';
 import { calculateSizes } from '../constants/index.js';
 import { HackerRoom } from '../components/HackerRoom.jsx';
 
+const introText = "I build fast, reliable software from clean APIs to full-stack products. Whether you need a backend system, a web app, or a complete solution, you're in the right place. Take a look around.";
+
 const Hero = () => {
   const isSmall = useMediaQuery({ maxWidth: 440 });
   const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -20,11 +22,25 @@ const Hero = () => {
   const sizes = calculateSizes(isSmall, isMobile, isTablet);
 
   const [animationName, setAnimationName] = useState('salute');
+  const [displayed, setDisplayed] = useState('');
   const introRef = useRef();
 
   useEffect(() => {
     const timer = setTimeout(() => setAnimationName('idle'), 3500);
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    let i = 0;
+    const start = setTimeout(() => {
+      const interval = setInterval(() => {
+        i++;
+        setDisplayed(introText.slice(0, i));
+        if (i >= introText.length) clearInterval(interval);
+      }, 22);
+      return () => clearInterval(interval);
+    }, 1000);
+    return () => clearTimeout(start);
   }, []);
 
   useGSAP(() => {
@@ -35,7 +51,7 @@ const Hero = () => {
     );
   }, []);
 
-  const developerPosition = isSmall ? [-1.5, -5, 2] : isMobile ? [-2, -5, 2] : isTablet ? [-3.5, -5.5, 3] : [-5, -5.5, 4];
+  const developerPosition = isSmall ? [1, -5.5, 2] : isMobile ? [1.5, -5.5, 2] : isTablet ? [0, -6, 3] : [2, -6, 4];
   const developerScale = isSmall ? 2.8 : isMobile ? 3.2 : isTablet ? 3.8 : 4.8;
 
   return (
@@ -44,7 +60,7 @@ const Hero = () => {
         <p className="sm:text-3xl text-xl font-medium text-white text-center font-generalsans">
           Hi, I am Moqeet Ul Hassan <span className="waving-hand">👋</span>
         </p>
-        <p className="hero_tag text-gray_gradient">Backend Developer</p>
+        <p className="hero_tag text-gray_gradient">Full Stack Developer </p>
       </div>
 
       <div className="w-full h-full absolute inset-0">
@@ -54,7 +70,7 @@ const Hero = () => {
 
             <HeroCamera isMobile={isMobile}>
               <HackerRoom scale={sizes.deskScale} position={sizes.deskPosition} rotation={[0.1, -Math.PI, 0]} />
-              <Developer position={developerPosition} scale={developerScale} animationName={animationName} rotation={[0, 0.4, 0]} />
+              <Developer position={developerPosition} scale={developerScale} animationName={animationName} rotation={[0, -0.4, 0]} />
             </HeroCamera>
 
             <ambientLight intensity={1} />
@@ -64,19 +80,16 @@ const Hero = () => {
         </Canvas>
       </div>
 
-      {/* Intro speech bubble */}
+      {/* Intro typewriter */}
       <div
         ref={introRef}
-        className="absolute top-48 sm:top-52 left-0 z-10 opacity-0 w-full max-w-xs sm:max-w-sm c-space">
-        <div className="relative bg-transparent rounded-2xl px-6 py-4 text-center">
-          {/* bubble tail */}
-          <div className="absolute -bottom-3 left-8 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[12px] border-t-black-300" />
-
-          <p className="text-white font-generalsans text-sm sm:text-base leading-relaxed">
-            Hi! I&apos;m{' '}
-            <span className="text-white font-semibold">Moqeet Ul Hassan</span> — a{' '}
-            <span className="text-white font-semibold">Backend Developer</span>. Welcome to my
-            portfolio where you can explore my experience, projects, and skills.
+        className="absolute top-44 sm:top-48 left-0 z-10 opacity-0 max-w-[220px] sm:max-w-[260px] pl-4 sm:pl-6">
+        <div className="bg-black/40 backdrop-blur-sm border border-white/10 rounded-2xl px-5 py-4">
+          <p className="text-white/85 text-xs sm:text-sm leading-relaxed font-generalsans">
+            {displayed}
+            {displayed.length < introText.length && (
+              <span className="inline-block w-0.5 h-3.5 bg-white/70 ml-0.5 align-middle animate-pulse" />
+            )}
           </p>
         </div>
       </div>

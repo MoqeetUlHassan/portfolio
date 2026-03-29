@@ -18,6 +18,15 @@ body {
     @apply sm:px-10 px-5;
   }
 
+  .animate-fade-in {
+    animation: fadeInUp 0.4s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   .head-text {
     @apply sm:text-4xl text-3xl font-semibold text-gray_gradient;
   }
