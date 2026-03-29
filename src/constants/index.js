@@ -64,7 +64,7 @@ export const myProjects = [
       'Built with Laravel, Vue.js, and TailwindCSS, Apimio offers scalable solutions for managing product catalogs efficiently.',
     href: 'https://www.youtube.com/watch?v=sample-apimio-demo',
     texture: '/textures/project/project1.mp4',
-    logo: '/assets/project-logo-apimio.png',
+    logo: '/assets/project-logo1.png',
     logoStyle: {
       backgroundColor: '#2A1816',
       border: '0.2px solid #36201D',
@@ -75,12 +75,12 @@ export const myProjects = [
       {
         id: 1,
         name: 'Laravel',
-        path: '/assets/laravel.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg',
       },
       {
         id: 2,
         name: 'Vue.js',
-        path: '/assets/vue.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vuejs/vuejs-original.svg',
       },
       {
         id: 3,
@@ -96,7 +96,7 @@ export const myProjects = [
       'Developed with Django, React.js, and PostgreSQL, Keystone is tailored for the logistics industry, ensuring real-time data accuracy and operational efficiency.',
     href: 'https://www.youtube.com/watch?v=sample-keystone-demo',
     texture: '/textures/project/project2.mp4',
-    logo: '/assets/project-logo-keystone.png',
+    logo: '/assets/project-logo2.png',
     logoStyle: {
       backgroundColor: '#13202F',
       border: '0.2px solid #17293E',
@@ -107,7 +107,7 @@ export const myProjects = [
       {
         id: 1,
         name: 'Django',
-        path: '/assets/django.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/django/django-plain.svg',
       },
       {
         id: 2,
@@ -117,7 +117,7 @@ export const myProjects = [
       {
         id: 3,
         name: 'PostgreSQL',
-        path: '/assets/postgresql.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg',
       },
     ],
   },
@@ -128,7 +128,7 @@ export const myProjects = [
       'Built with React.js, Node.js, and OpenWeather API, Mausam ensures quick and reliable weather data delivery for users worldwide.',
     href: 'https://www.youtube.com/watch?v=sample-mausam-demo',
     texture: '/textures/project/project3.mp4',
-    logo: '/assets/project-logo-mausam.png',
+    logo: '/assets/project-logo3.png',
     logoStyle: {
       backgroundColor: '#60f5a1',
       background:
@@ -146,12 +146,12 @@ export const myProjects = [
       {
         id: 2,
         name: 'Node.js',
-        path: '/assets/nodejs.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
       },
       {
         id: 3,
         name: 'OpenWeather API',
-        path: '/assets/openweather.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
       },
     ],
   },
@@ -162,7 +162,7 @@ export const myProjects = [
       'Powered by Next.js, Stripe, and Firebase, BOVIT offers a robust and secure platform for managing events and payments with ease.',
     href: 'https://www.youtube.com/watch?v=sample-bovit-demo',
     texture: '/textures/project/project4.mp4',
-    logo: '/assets/project-logo-bovit.png',
+    logo: '/assets/project-logo4.png',
     logoStyle: {
       backgroundColor: '#1C1A43',
       border: '0.2px solid #252262',
@@ -173,17 +173,17 @@ export const myProjects = [
       {
         id: 1,
         name: 'Next.js',
-        path: '/assets/nextjs.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg',
       },
       {
         id: 2,
         name: 'Stripe',
-        path: '/assets/stripe.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg',
       },
       {
         id: 3,
         name: 'Firebase',
-        path: '/assets/firebase.svg',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-original.svg',
       },
     ],
   },
