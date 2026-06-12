@@ -203,6 +203,15 @@ export const calculateSizes = (isSmall, isMobile, isTablet) => {
 
 export const workExperiences = [
   {
+    id: 0,
+    name: 'AmrokGate',
+    pos: 'Founder & Owner',
+    duration: '2024 - Present',
+    title: "AmrokGate is my own product — a platform I founded and built from the ground up. I lead the product vision, architecture, and development, driving it from concept to a live product at amrokgate.com.",
+    icon: 'https://amrokgate.com/favicon.ico',
+    animation: 'victory',
+  },
+  {
     id: 1,
     name: 'Framer',
     pos: 'Lead Web Developer',

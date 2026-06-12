@@ -7,7 +7,8 @@
       "Bash(cp \"E:/project/portfolio/Moqeet_Ul_Hassan_team.pdf\" \"E:/project/portfolio/public/resume.pdf\")",
       "Bash(cp \"E:/project/portfolio/linkedin pic.jfif\" \"E:/project/portfolio/public/assets/profile.jfif\")",
       "Bash(cp \"E:/project/portfolio/pic.png\" \"E:/project/portfolio/public/assets/profile.png\")",
-      "Bash(cp:*)"
+      "Bash(cp:*)",
+      "Bash(Get-ChildItem \"E:\\\\project\\\\portfolio\\\\public\\\\assets\\\\\" | Select-Object Name *)"
     ]
   }
 }
