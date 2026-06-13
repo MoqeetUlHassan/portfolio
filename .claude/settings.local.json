@@ -8,7 +8,27 @@
       "Bash(cp \"E:/project/portfolio/linkedin pic.jfif\" \"E:/project/portfolio/public/assets/profile.jfif\")",
       "Bash(cp \"E:/project/portfolio/pic.png\" \"E:/project/portfolio/public/assets/profile.png\")",
       "Bash(cp:*)",
-      "Bash(Get-ChildItem \"E:\\\\project\\\\portfolio\\\\public\\\\assets\\\\\" | Select-Object Name *)"
+      "Bash(Get-ChildItem \"E:\\\\project\\\\portfolio\\\\public\\\\assets\\\\\" | Select-Object Name *)",
+      "Bash(pip install *)",
+      "Bash(python3 *)",
+      "Bash(copy \"e:\\\\profile\\\\images.jfif\" \"E:\\\\project\\\\portfolio\\\\door-ref.jpg\")",
+      "Bash(python *)",
+      "Bash(rm debug_anime_strip.png debug_bride_nobg.png debug_cx510.png debug_groom_nobg.png debug_man_face.png debug_man_face2.png debug_woman_face.png debug_woman_face2.png door-ref.jpg fix_groom.py make_couple_bg.py)",
+      "Bash(ls *.py *.png *.jpg)",
+      "WebSearch",
+      "WebFetch(domain:www.pngwing.com)",
+      "WebFetch(domain:www.cleanpng.com)",
+      "Bash(curl -L -o couple-preview.png \"https://static.vecteezy.com/system/resources/thumbnails/012/011/843/small/indian-wedding-couple-character-bride-and-groom-free-png.png\" -A \"Mozilla/5.0\")",
+      "Bash(curl -L -o couple-full.png \"https://static.vecteezy.com/system/resources/previews/012/011/843/non_2x/indian-wedding-couple-character-bride-and-groom-free-png.png\" -A \"Mozilla/5.0\")",
+      "Bash(curl -L -o groom-online.png \"https://static.vecteezy.com/system/resources/thumbnails/044/609/808/small/cute-couple-dance-in-traditional-indian-dress-cartoon-characters-bride-and-groom-png.png\" -A \"Mozilla/5.0\")",
+      "Bash(curl -L -o bride-online.png \"https://static.vecteezy.com/system/resources/thumbnails/051/555/026/small/indian-couple-in-wedding-attire-celebrating-love-png.png\" -A \"Mozilla/5.0\")",
+      "Bash(curl -sL \"https://static.vecteezy.com/system/resources/previews/056/414/066/non_2x/traditional-indian-groom-character-in-golden-sherwani-with-turban-and-ornate-accessories-on-transparent-background-free-png.png\" -A \"Mozilla/5.0\" -o groom-test.png)",
+      "Bash(curl -sL \"https://static.vecteezy.com/system/resources/previews/057/228/643/non_2x/the-indian-groom-in-a-blue-and-white-indian-sherwani-free-png.png\" -A \"Mozilla/5.0\" -o groom-test2.png)",
+      "WebFetch(domain:www.vecteezy.com)",
+      "Bash(curl -sL \"https://static.vecteezy.com/system/resources/previews/057/227/258/non_2x/beautiful-indian-bride-in-traditional-red-sari-free-png.png\" -A \"Mozilla/5.0\" -o bride_sari_full.png)",
+      "Bash(curl -sL \"https://static.vecteezy.com/system/resources/previews/037/253/816/non_2x/ai-generated-beautiful-quite-wedding-couple-for-wedding-card-invitation-free-png.png\" -A \"Mozilla/5.0\" -o couple2_full.png)",
+      "Bash(curl -sL \"https://static.vecteezy.com/system/resources/previews/012/011/848/non_2x/indian-wedding-couple-character-bride-and-groom-free-png.png\" -A \"Mozilla/5.0\" -o couple3_full.png)",
+      "WebFetch(domain:api.anthropic.com)"
     ]
   }
 }
