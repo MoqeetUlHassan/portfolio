@@ -128,9 +128,9 @@ const AmrokGate = () => {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl font-bold mb-12">What makes it different</h2>
           <div className="grid sm:grid-cols-2 gap-6">
-            {features.map((f, i) => (
+            {features.map((f) => (
               <div
-                key={i}
+                key={f.title}
                 className="p-6 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all">
                 <span className="text-3xl">{f.icon}</span>
                 <h3 className="text-lg font-semibold mt-4 mb-2">{f.title}</h3>

@@ -33,7 +33,8 @@
       "PowerShell(pip install *)",
       "PowerShell(python \"e:\\\\profile\\\\remove_bg_ai.py\")",
       "PowerShell(Get-Item \"e:\\\\profile\\\\couple2_nobg.png\",\"e:\\\\profile\\\\couple1_nobg.png\" | Select-Object Name, @{n='KB';e={[math]::Round\\($_.Length/1KB,1\\)}})",
-      "PowerShell(Copy-Item *)"
+      "PowerShell(Copy-Item *)",
+      "Skill(code-review)"
     ]
   }
 }

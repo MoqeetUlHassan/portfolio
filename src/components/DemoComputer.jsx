@@ -17,14 +17,23 @@ const VideoScreenMaterial = ({ src }) => {
 
 const ImageScreenMaterial = ({ src }) => {
   const txt = useTexture(src);
-  txt.flipY = true;
-  txt.needsUpdate = true;
+  useEffect(() => {
+    if (txt) {
+      txt.flipY = true;
+      txt.needsUpdate = true;
+    }
+  }, [txt]);
   return <meshBasicMaterial map={txt} toneMapped={false} />;
 };
 
 class ScreenBoundary extends Component {
   state = { error: false };
   static getDerivedStateFromError() { return { error: true }; }
+  componentDidUpdate(prevProps) {
+    if (prevProps.src !== this.props.src && this.state.error) {
+      this.setState({ error: false });
+    }
+  }
   render() {
     if (this.state.error) return <meshBasicMaterial color="#111111" />;
     return this.props.children;
@@ -34,7 +43,7 @@ class ScreenBoundary extends Component {
 const DemoComputer = (props) => {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF('/models/computer.glb');
-  const { actions } = useAnimations(animations, group);
+  useAnimations(animations, group);
 
   const textureSrc = props.texture || '/textures/project/project1.mp4';
   const useImage = isImagePath(textureSrc);
@@ -57,7 +66,7 @@ const DemoComputer = (props) => {
           position={[0.127, 1.831, 0.511]}
           rotation={[1.571, -0.005, 0.031]}
           scale={[0.661, 0.608, 0.401]}>
-          <ScreenBoundary>
+          <ScreenBoundary src={textureSrc}>
             {useImage
               ? <ImageScreenMaterial src={textureSrc} />
               : <VideoScreenMaterial src={textureSrc} />}
