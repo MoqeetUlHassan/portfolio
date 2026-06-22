@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Center, OrbitControls } from '@react-three/drei';
+import { Link } from 'react-router-dom';
 
 import { myProjects } from '../constants/index.js';
 import CanvasLoader from '../components/Loading.jsx';
@@ -61,14 +62,25 @@ const Projects = () => {
               ))}
             </div>
 
-            <a
-              className="flex items-center gap-2 cursor-pointer text-white-600"
-              href={currentProject.href}
-              target="_blank"
-              rel="noreferrer">
-              <p>Check Live Site</p>
-              <img src="/assets/arrow-up.png" alt="arrow" className="w-3 h-3" />
-            </a>
+            <div className="flex items-center gap-4">
+              <a
+                className="flex items-center gap-2 cursor-pointer text-white-600"
+                href={currentProject.href}
+                target="_blank"
+                rel="noreferrer">
+                <p>Check Live Site</p>
+                <img src="/assets/arrow-up.png" alt="arrow" className="w-3 h-3" />
+              </a>
+
+              {currentProject.detailPage && (
+                <Link
+                  to={currentProject.detailPage}
+                  className="flex items-center gap-1 cursor-pointer text-indigo-400 hover:text-indigo-300 transition-colors text-sm font-medium">
+                  <p>View Page</p>
+                  <img src="/assets/arrow-up.png" alt="arrow" className="w-3 h-3" style={{ filter: 'invert(60%) sepia(100%) saturate(500%) hue-rotate(200deg)' }} />
+                </Link>
+              )}
+            </div>
           </div>
 
           <div className="flex justify-between items-center mt-7">

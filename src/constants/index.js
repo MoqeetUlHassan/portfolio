@@ -58,6 +58,39 @@ export const clientReviews = [
 
 export const myProjects = [
   {
+    title: 'AmrokGate - My Own Product',
+    desc: 'AmrokGate is a platform I founded and built from the ground up — owning the full stack from product vision and architecture to development and deployment.',
+    subdesc:
+      'A live, production-ready product launched in 2024. I lead every aspect: engineering, design, and product strategy at amrokgate.com.',
+    href: 'https://www.amrokgate.com',
+    detailPage: '/amrokgate',
+    texture: '/textures/project/amrokgate-screen.png',
+    logo: '/assets/amrokgatelogo.svg',
+    logoStyle: {
+      backgroundColor: '#1a1a2e',
+      border: '0.2px solid #4f46e5',
+      boxShadow: '0px 0px 60px 0px #6366f14D',
+    },
+    spotlight: '/assets/spotlight1.png',
+    tags: [
+      {
+        id: 1,
+        name: 'React.js',
+        path: '/assets/react.svg',
+      },
+      {
+        id: 2,
+        name: 'Node.js',
+        path: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg',
+      },
+      {
+        id: 3,
+        name: 'TailwindCSS',
+        path: '/assets/tailwindcss.png',
+      },
+    ],
+  },
+  {
     title: 'Apimio - Product Information Management System (PIMS)',
     desc: 'Apimio is a comprehensive Product Information Management (PIMS) platform, enabling businesses to centralize, enrich, and distribute product data across multiple sales channels. It improves operational efficiency and ensures product data consistency.',
     subdesc:
@@ -208,8 +241,9 @@ export const workExperiences = [
     pos: 'Founder & Owner',
     duration: '2024 - Present',
     title: "AmrokGate is my own product — a platform I founded and built from the ground up. I lead the product vision, architecture, and development, driving it from concept to a live product at amrokgate.com.",
-    icon: 'https://amrokgate.com/favicon.ico',
+    icon: '/assets/amrokgatelogo.svg',
     animation: 'victory',
+    detailPage: '/amrokgate',
   },
   {
     id: 1,

@@ -1,0 +1,11 @@
+<svg viewBox="0 0 740 420" xmlns="http://www.w3.org/2000/svg">
+  <polyline points="50,420 50,62 370,256 690,62 690,420"
+            fill="none" stroke="#008080" stroke-width="76"
+            stroke-linejoin="miter" stroke-linecap="butt"/>
+  <rect x="13"  y="8" width="18" height="56" fill="#008080"/>
+  <rect x="43"  y="8" width="18" height="56" fill="#008080"/>
+  <rect x="73"  y="8" width="15" height="56" fill="#008080"/>
+  <rect x="652" y="8" width="15" height="56" fill="#008080"/>
+  <rect x="679" y="8" width="18" height="56" fill="#008080"/>
+  <rect x="709" y="8" width="18" height="56" fill="#008080"/>
+</svg>

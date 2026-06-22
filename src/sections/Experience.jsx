@@ -1,6 +1,7 @@
 import { Suspense, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import { Link } from 'react-router-dom';
 
 import Developer from '../components/Developer.jsx';
 import CanvasLoader from '../components/Loading.jsx';
@@ -55,6 +56,14 @@ const WorkExperience = () => {
                       {item.pos} -- <span>{item.duration}</span>
                     </p>
                     <p className="group-hover:text-white transition-all ease-in-out duration-500">{item.title}</p>
+                    {item.detailPage && (
+                      <Link
+                        to={item.detailPage}
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1 mt-3 text-indigo-400 hover:text-indigo-300 transition-colors text-sm font-medium">
+                        View dedicated page →
+                      </Link>
+                    )}
                   </div>
                 </div>
               ))}
