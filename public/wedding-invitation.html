@@ -951,50 +951,94 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
     }
 
     function doCapture() {
-      var cardEl = document.getElementById('card');
-      var W = cardEl.offsetWidth;
-      var H = cardEl.offsetHeight;
-      /* jsPDF: use mm to avoid px-scaling quirks */
-      var PX_TO_MM = 0.2646;
-      var mmW = W * PX_TO_MM;
-      var mmH = H * PX_TO_MM;
-      var pdf = new window.jspdf.jsPDF({
+      var card = document.getElementById('card');
+      var W    = card.offsetWidth;
+      var H    = card.offsetHeight;
+      var mmW  = W * (25.4 / 96);   /* px → mm at 96 dpi */
+      var mmH  = H * (25.4 / 96);
+      var pdf  = new window.jspdf.jsPDF({
         orientation: H >= W ? 'portrait' : 'landscape',
         unit: 'mm',
         format: [mmW, mmH]
       });
+      var slideEls = Array.prototype.slice.call(document.querySelectorAll('.slide'));
       var idx = 0;
-      function next() {
-        if (idx >= 4) {
+
+      function captureNext() {
+        if (idx >= slideEls.length) {
           try { pdf.save('Walima-Invitation-Moqeet-Ayesha.pdf'); }
-          catch (e) { alert('Download ready — if nothing saved, allow popups for this page.'); }
+          catch (e) { alert('Allow popups to enable PDF download.'); }
           resetDlBtn();
           return;
         }
-        /* scroll instantly to slide idx, then wait for paint */
-        reel.scrollLeft = idx * reel.offsetWidth;
-        setTimeout(function () {
-          html2canvas(cardEl, {
+
+        /* Clone the slide into an isolated off-screen container so html2canvas
+           never has to deal with the scrollable reel. The container gets
+           container-type:inline-size so cqw units resolve to the correct width. */
+        var tmp = document.createElement('div');
+        tmp.style.cssText = [
+          'position:fixed', 'left:0', 'top:100vh',
+          'width:' + W + 'px', 'height:' + H + 'px',
+          'overflow:hidden', 'z-index:9999',
+          'container-type:inline-size'
+        ].join(';');
+        document.body.appendChild(tmp);
+
+        var clone = slideEls[idx].cloneNode(true);
+        clone.style.cssText = 'width:100%;height:100%;position:relative;flex:none;';
+        /* show entrance-animation elements */
+        Array.prototype.forEach.call(clone.querySelectorAll('.se'), function (el) {
+          el.classList.add('show');
+        });
+        /* freeze particles (keeps PDF clean) */
+        Array.prototype.forEach.call(clone.querySelectorAll('.gp'), function (p) {
+          p.style.display = 'none';
+        });
+        tmp.appendChild(clone);
+
+        /* wait for images inside the clone to finish loading */
+        var imgs    = Array.prototype.slice.call(clone.querySelectorAll('img'));
+        var pending = imgs.filter(function (i) { return !i.complete; });
+        var done    = 0;
+
+        function proceed() {
+          html2canvas(tmp, {
             useCORS: true,
-            scale: Math.min(window.devicePixelRatio || 1, 1.5),
+            scale: 1,
             logging: false,
             backgroundColor: '#FDF8F1',
-            windowWidth: window.innerWidth,
-            windowHeight: window.innerHeight
+            width: W, height: H,
+            scrollX: 0, scrollY: 0,
+            windowWidth: W, windowHeight: H
           }).then(function (canvas) {
-            var img = canvas.toDataURL('image/jpeg', 0.9);
+            if (document.body.contains(tmp)) document.body.removeChild(tmp);
+            var imgData = canvas.toDataURL('image/jpeg', 0.92);
             if (idx > 0) pdf.addPage([mmW, mmH]);
-            pdf.addImage(img, 'JPEG', 0, 0, mmW, mmH, '', 'FAST');
+            pdf.addImage(imgData, 'JPEG', 0, 0, mmW, mmH, '', 'FAST');
             idx++;
-            next();
+            captureNext();
           }).catch(function (err) {
-            console.error('Slide ' + idx + ' capture failed:', err);
+            console.error('Slide ' + idx + ' capture error:', err);
+            if (document.body.contains(tmp)) document.body.removeChild(tmp);
             idx++;
-            next();
+            captureNext();
           });
-        }, 500);
+        }
+
+        if (pending.length === 0) {
+          setTimeout(proceed, 80);
+        } else {
+          pending.forEach(function (img) {
+            function onDone() {
+              if (++done >= pending.length) setTimeout(proceed, 80);
+            }
+            img.addEventListener('load',  onDone, { once: true });
+            img.addEventListener('error', onDone, { once: true });
+          });
+        }
       }
-      next();
+
+      captureNext();
     }
 
     loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', function () {
