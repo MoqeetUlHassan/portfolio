@@ -116,17 +116,14 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 /* Full-bleed background photo */
 .s1-bg{position:absolute;inset:0;z-index:0}
 .s1-bg img{width:100%;height:100%;display:block;object-fit:cover;
-  object-position:center 25%;user-select:none;pointer-events:none}
+  object-position:center 10%;user-select:none;pointer-events:none}
 
-/* White gradient fade: dense at top for text, slight window in middle, then covers figures at bottom */
+/* Two-layer fade: white from top (text area) + solid cream from bottom (covers figures).
+   Both reach transparent at ~45–50% so a narrow atmospheric window stays at centre. */
 .s1-fade{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(180deg,
-    rgba(255,255,255,.96) 0%,
-    rgba(255,255,255,.88) 18%,
-    rgba(255,255,255,.55) 40%,
-    rgba(255,255,255,.82) 60%,
-    rgba(255,255,255,.95) 78%,
-    rgba(255,255,255,.99) 100%)}
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,.97) 0%, rgba(255,255,255,0) 44%),
+    linear-gradient(to top,    rgba(253,248,241,.99) 0%, rgba(253,248,241,0) 48%)}
 
 
 /* Content on top of fade */
