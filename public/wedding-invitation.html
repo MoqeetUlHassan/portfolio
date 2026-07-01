@@ -118,14 +118,15 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 .s1-bg img{width:100%;height:100%;display:block;object-fit:cover;
   object-position:center 25%;user-select:none;pointer-events:none}
 
-/* White gradient fade: dense at top for text, thins to ~50% at midpoint, near transparent at bottom */
+/* White gradient fade: dense at top for text, slight window in middle, then covers figures at bottom */
 .s1-fade{position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(180deg,
-    rgba(255,255,255,.94) 0%,
-    rgba(255,255,255,.82) 22%,
-    rgba(255,255,255,.50) 50%,
-    rgba(255,255,255,.18) 75%,
-    rgba(255,255,255,.06) 100%)}
+    rgba(255,255,255,.96) 0%,
+    rgba(255,255,255,.88) 18%,
+    rgba(255,255,255,.55) 40%,
+    rgba(255,255,255,.82) 60%,
+    rgba(255,255,255,.95) 78%,
+    rgba(255,255,255,.99) 100%)}
 
 
 /* Content on top of fade */
@@ -226,23 +227,26 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 .s3-title .head{font-family:var(--fd);font-size:clamp(13px,3.8cqw,22px);
   color:var(--br);letter-spacing:.06em}
 
-.s3-div{position:relative;z-index:2;width:100%;margin:clamp(5px,1.6cqw,9px) 0}
+.s3-div{position:relative;z-index:2;width:100%;margin:clamp(3px,1cqw,6px) 0}
 
-/* ── CALENDAR WIDGET ── */
-.cal{position:relative;z-index:2;width:100%;border-radius:10px;overflow:hidden;
-  border:1px solid rgba(191,155,70,.3);box-shadow:0 4px 18px rgba(58,42,24,.08)}
+/* ── CALENDAR WIDGET — outline/ghost style, centred in top half ── */
+.cal{position:relative;z-index:2;width:78%;align-self:center;
+  border-radius:10px;overflow:hidden;
+  border:1px solid rgba(191,155,70,.36);background:transparent}
 
-.cal-hdr{background:var(--g);padding:clamp(7px,2cqw,13px) clamp(10px,2.8cqw,18px);
+.cal-hdr{background:transparent;
+  border-bottom:1px solid rgba(191,155,70,.28);
+  padding:clamp(7px,2cqw,13px) clamp(10px,2.8cqw,18px);
   display:flex;align-items:center;justify-content:space-between}
-.cal-hdr .month{font-family:var(--fd);font-size:clamp(13px,3.8cqw,22px);color:#fff}
+.cal-hdr .month{font-family:var(--fd);font-size:clamp(13px,3.8cqw,22px);color:var(--g)}
 .cal-hdr .yr{font-family:var(--fc);font-size:clamp(10px,2.6cqw,15px);
-  color:rgba(255,255,255,.78);margin-left:.5em}
+  color:rgba(191,155,70,.72);margin-left:.5em}
 .cal-badge{font-family:var(--fc);font-size:clamp(6px,1.4cqw,9px);
-  letter-spacing:.2em;color:#fff;border:1px solid rgba(255,255,255,.45);
+  letter-spacing:.2em;color:var(--g);border:1px solid rgba(191,155,70,.4);
   padding:2px clamp(5px,1.4cqw,8px);border-radius:20px;white-space:nowrap}
 
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);
-  background:rgba(253,248,241,.85);padding:clamp(4px,1.2cqw,7px) clamp(5px,1.4cqw,8px);
+  background:transparent;padding:clamp(4px,1.2cqw,7px) clamp(5px,1.4cqw,8px);
   gap:clamp(1px,.5cqw,3px)}
 .cal-dname{font-family:var(--fc);font-size:clamp(5px,1.3cqw,8px);
   letter-spacing:.08em;color:var(--g);text-align:center;
@@ -255,9 +259,9 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
   transform:translateX(-50%);font-size:clamp(5px,1.2cqw,7px);color:var(--g);opacity:.75}
 .cal-d.dim{color:rgba(58,42,24,.2)}
 
-/* ── TIME ROW ── */
+/* ── TIME ROW — margin-top:auto pushes this + venue to lower 1/3 ── */
 .time-row{position:relative;z-index:2;width:100%;display:flex;gap:clamp(6px,1.8cqw,10px);
-  margin-top:clamp(6px,1.8cqw,10px)}
+  margin-top:auto}
 .time-box{flex:1;border:1px solid rgba(191,155,70,.28);border-radius:7px;
   padding:clamp(6px,1.7cqw,10px) clamp(8px,2.2cqw,14px);
   background:rgba(253,248,241,.6);text-align:center}
