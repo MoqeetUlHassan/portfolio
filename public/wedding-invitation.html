@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="wedding-assets/couple-back.png" />
+<link rel="preload" as="image" href="wedding-assets/couple-front.png" />
 <style>
 :root {
   --g:    #BF9B46;
@@ -784,8 +786,16 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
     }, 120);
   }, { passive: true });
 
-  /* kick off auto-play */
-  startAuto();
+  /* kick off auto-play — wait for slide 1 background image to be ready */
+  var bgImg = document.querySelector('.s1-bg img');
+  if (bgImg && bgImg.complete) {
+    startAuto();
+  } else if (bgImg) {
+    bgImg.addEventListener('load',  startAuto, { once: true });
+    bgImg.addEventListener('error', startAuto, { once: true });
+  } else {
+    startAuto();
+  }
 
   /* ── Calm wedding music — soft sine arpeggios, G major I-V-vi-IV ── */
   var actx = null, master = null, musicOn = true, loopTimer = null;
