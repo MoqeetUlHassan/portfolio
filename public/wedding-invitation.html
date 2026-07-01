@@ -75,6 +75,19 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 #dl-btn:hover{color:var(--g)}
 #dl-btn[disabled]{opacity:.4;cursor:default}
 #dl-btn svg{width:13px;height:13px}
+#trk-btn{width:20px;height:20px;display:flex;align-items:center;justify-content:center;
+  background:none;border:none;color:rgba(191,155,70,.65);cursor:pointer;padding:0;
+  margin-left:2px;transition:color .2s;-webkit-tap-highlight-color:transparent}
+#trk-btn:hover{color:var(--g)}
+#trk-btn svg{width:13px;height:13px}
+.trk-toast{position:absolute;bottom:calc(100% + 7px);left:50%;
+  transform:translateX(-50%);white-space:nowrap;pointer-events:none;
+  font-family:var(--fc);font-size:clamp(7px,1.7cqw,9px);letter-spacing:.14em;
+  color:var(--br);background:rgba(253,248,241,.95);
+  border:1px solid rgba(191,155,70,.32);border-radius:20px;
+  padding:3px clamp(8px,2cqw,12px);
+  opacity:0;transition:opacity .3s}
+.trk-toast.show{opacity:1}
 
 /* ── SOUND BTN ── */
 #snd{position:fixed;top:14px;right:14px;z-index:50;width:36px;height:36px;
@@ -128,16 +141,17 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 
 /* Content on top of fade */
 .s1-bsm{position:relative;z-index:3;width:100%;text-align:center;margin-top:2cqw}
-.s1-bsm .ar{font-family:var(--fa);font-size:clamp(13px,4.4cqw,26px);
-  color:var(--g);direction:rtl;line-height:1.9;font-weight:400}
+.s1-bsm .ar{font-family:var(--fa);font-size:clamp(11px,3.6cqw,21px);
+  color:var(--g);direction:rtl;line-height:1.6;font-weight:400;
+  letter-spacing:.08em;word-spacing:.3em}
 
 .s1-vrs{position:relative;z-index:3;width:100%;text-align:center;margin-top:clamp(4px,1.3cqw,8px)}
 .s1-vrs .ar{font-family:var(--fa);font-size:clamp(17px,5.8cqw,33px);
   font-weight:700;color:var(--br);direction:rtl;line-height:1.55}
 .s1-vrs .en{font-family:var(--fb);font-style:italic;
-  font-size:clamp(10px,2.6cqw,15px);color:var(--br-m);margin-top:.3em;line-height:1.45}
-.s1-vrs .ref{font-family:var(--fc);font-size:clamp(7px,1.6cqw,10px);
-  letter-spacing:.22em;color:var(--g);margin-top:.35em;opacity:.82}
+  font-size:clamp(10px,2.6cqw,15px);color:#000;margin-top:.3em;line-height:1.45}
+.s1-vrs .ref{font-family:var(--fc);font-weight:700;font-size:clamp(7px,1.6cqw,10px);
+  letter-spacing:.22em;color:#000;margin-top:.35em;opacity:1}
 
 .s1-div{position:relative;z-index:3;width:100%;margin:clamp(6px,1.8cqw,11px) 0}
 
@@ -316,6 +330,20 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
   color:var(--g);display:block;margin-top:.55em;letter-spacing:.04em}
 .s4-body .dt{font-family:var(--fc);font-size:clamp(7px,1.7cqw,10px);
   letter-spacing:.24em;color:rgba(191,155,70,.68);display:block;margin-top:.3em}
+
+.s4-dl{position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;gap:.55em;
+  margin-top:clamp(14px,3.8cqw,24px);
+  width:76%;
+  padding:clamp(10px,2.8cqw,16px) clamp(18px,4.5cqw,28px);
+  background:var(--g);border:none;border-radius:8px;
+  font-family:var(--fc);font-size:clamp(9px,2.2cqw,13px);
+  letter-spacing:.22em;text-transform:uppercase;color:#fff;
+  cursor:pointer;transition:opacity .18s, transform .18s;
+  -webkit-tap-highlight-color:transparent;box-shadow:0 6px 22px rgba(191,155,70,.35)}
+.s4-dl:hover{opacity:.88}
+.s4-dl:active{transform:scale(.97)}
+.s4-dl svg{width:clamp(12px,3cqw,16px);height:clamp(12px,3cqw,16px);flex-shrink:0}
 </style>
 </head>
 <body>
@@ -655,6 +683,15 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
     <span class="dt">Sunday, 29 November 2026</span>
    </div>
 
+   <button class="s4-dl se d4" id="s4-dl-btn" aria-label="Download invitation">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+     <polyline points="7 10 12 15 17 10"/>
+     <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Save Invitation
+   </button>
+
   </div><!-- /s4 -->
 
   </div><!-- /reel -->
@@ -678,6 +715,14 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
      <line x1="12" y1="15" x2="12" y2="3"/>
     </svg>
    </button>
+   <button id="trk-btn" aria-label="Switch music track">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M9 18V5l12-2v13"/>
+     <circle cx="6" cy="18" r="3"/>
+     <circle cx="18" cy="16" r="3"/>
+    </svg>
+   </button>
+   <div class="trk-toast" id="trk-toast"></div>
   </div>
 
  </div><!-- /card -->
@@ -691,6 +736,8 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
   </svg>
  </button>
 </div><!-- /stage -->
+
+<audio id="bg-music" src="wedding-assets/music.mpeg" loop preload="none"></audio>
 
 <script>
 (function () {
@@ -775,19 +822,10 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
     playBtn.setAttribute('aria-label', autoPlaying ? 'Pause auto-play' : 'Resume auto-play');
     if (autoPlaying) {
       startAuto();
-      /* fade music back in */
-      if (master && actx && musicOn) {
-        if (actx.state === 'suspended') actx.resume();
-        master.gain.cancelScheduledValues(actx.currentTime);
-        master.gain.linearRampToValueAtTime(0.38, actx.currentTime + 1.0);
-      }
+      if (musicOn) musicFade(0.75);
     } else {
       stopAuto();
-      /* fade music out */
-      if (master && actx) {
-        master.gain.cancelScheduledValues(actx.currentTime);
-        master.gain.linearRampToValueAtTime(0, actx.currentTime + 0.4);
-      }
+      musicFade(0);
     }
   }
 
@@ -829,73 +867,62 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
     startAuto();
   }
 
-  /* ── Calm wedding music — soft sine arpeggios, G major I-V-vi-IV ── */
-  var actx = null, master = null, musicOn = true, loopTimer = null;
-
-  /* G → D/F# → Em → C  (warm I-V-vi-IV in G major) */
-  var chords = [
-    [196.00, 246.94, 293.66, 392.00],  /* G  */
-    [184.99, 220.00, 293.66, 369.99],  /* D/F# */
-    [164.81, 196.00, 246.94, 329.63],  /* Em */
-    [130.81, 164.81, 196.00, 261.63],  /* C  */
+  /* ── Background music — multiple tracks ── */
+  var tracks = [
+    { src: 'wedding-assets/music.mpeg',  label: 'Nasheed' },
+    { src: 'wedding-assets/perfect.mp3', label: 'Perfect · Ed Sheeran' }
   ];
+  var trackIdx  = 0;
+  var bgMusic   = document.getElementById('bg-music');
+  var musicOn   = true;
+  var musicFadeIv = null;
 
-  function initAudio() {
-    if (actx) return;
-    try {
-      actx = new (window.AudioContext || window.webkitAudioContext)();
-      master = actx.createGain();
-      master.gain.value = 0;
-
-      /* Warm reverb: delay + gentle feedback loop */
-      var dly = actx.createDelay(2.0);
-      var fb  = actx.createGain();
-      dly.delayTime.value = 0.30;
-      fb.gain.value = 0.35;
-      dly.connect(fb); fb.connect(dly);
-
-      master.connect(dly);
-      master.connect(actx.destination);
-      dly.connect(actx.destination);
-    } catch (e) { actx = null; }
-  }
-
-  function note(freq, t, dur, vol) {
-    if (!actx) return;
-    var o = actx.createOscillator(), g = actx.createGain();
-    o.type = 'sine';                      /* sine = softest tone */
-    o.frequency.value = freq;
-    o.connect(g); g.connect(master);
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(vol, t + 0.10);   /* gentle attack */
-    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
-    o.start(t); o.stop(t + dur + 0.15);
-  }
-
-  function playLoop() {
-    if (!actx) return;
-    var t    = actx.currentTime + 0.04;
-    var step = 0.62;   /* spacing between arpeggio notes */
-    var pos  = 0;
-    chords.forEach(function (ch) {
-      ch.forEach(function (freq, i) {
-        /* top note (melody) slightly brighter; bass softer */
-        var vol = i === ch.length - 1 ? 0.13 : i === 0 ? 0.07 : 0.09;
-        note(freq, t + pos, 2.4, vol);
-        pos += step;
-      });
-    });
-    /* slight loop overlap so there's no silence gap */
-    loopTimer = setTimeout(playLoop, (pos - 0.5) * 1000);
+  function musicFade(targetVol) {
+    clearInterval(musicFadeIv);
+    if (targetVol > 0 && bgMusic.paused) {
+      bgMusic.play().catch(function () {});
+    }
+    var step = targetVol > bgMusic.volume ? 0.04 : -0.04;
+    musicFadeIv = setInterval(function () {
+      var next = bgMusic.volume + step;
+      if ((step > 0 && next >= targetVol) || (step < 0 && next <= targetVol)) {
+        bgMusic.volume = targetVol;
+        clearInterval(musicFadeIv);
+        if (targetVol === 0) bgMusic.pause();
+      } else {
+        bgMusic.volume = next;
+      }
+    }, 40);
   }
 
   function startMusic() {
-    initAudio(); if (!actx) return;
-    if (actx.state === 'suspended') actx.resume();
-    master.gain.cancelScheduledValues(actx.currentTime);
-    master.gain.linearRampToValueAtTime(musicOn ? 0.38 : 0, actx.currentTime + 1.8);
-    if (!loopTimer) playLoop();
+    if (!musicOn) return;
+    bgMusic.volume = 0;
+    musicFade(0.75);
   }
+
+  function showTrackToast(label) {
+    var toast = document.getElementById('trk-toast');
+    toast.textContent = label;
+    toast.classList.add('show');
+    clearTimeout(toast._tid);
+    toast._tid = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+  }
+
+  document.getElementById('trk-btn').addEventListener('click', function () {
+    trackIdx = (trackIdx + 1) % tracks.length;
+    var wasPlaying = !bgMusic.paused;
+    clearInterval(musicFadeIv);
+    bgMusic.pause();
+    bgMusic.src = tracks[trackIdx].src;
+    bgMusic.load();
+    if (wasPlaying && musicOn) {
+      bgMusic.volume = 0;
+      bgMusic.play().catch(function () {});
+      musicFade(0.75);
+    }
+    showTrackToast(tracks[trackIdx].label);
+  });
 
   var sndOn  = '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M19 6a8 8 0 0 1 0 12"/>';
   var sndOff = '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M22 9l-6 6"/><path d="M16 9l6 6"/>';
@@ -904,11 +931,13 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
   document.getElementById('snd').addEventListener('click', function () {
     musicOn = !musicOn;
     sndIcon.innerHTML = musicOn ? sndOn : sndOff;
-    if (musicOn) { startMusic(); }
-    else if (master && actx) {
-      master.gain.cancelScheduledValues(actx.currentTime);
-      master.gain.linearRampToValueAtTime(0, actx.currentTime + 0.4);
-    }
+    if (musicOn) { musicFade(0.75); }
+    else { musicFade(0); }
+  });
+
+  /* big download button on slide 4 delegates to the nav-row dl-btn */
+  document.getElementById('s4-dl-btn').addEventListener('click', function () {
+    document.getElementById('dl-btn').click();
   });
 
   /* first tap starts music; subsequent taps toggle play/pause */
