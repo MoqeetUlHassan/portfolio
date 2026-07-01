@@ -69,6 +69,12 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
   margin-left:4px;transition:color .2s;-webkit-tap-highlight-color:transparent}
 #play-btn svg{width:13px;height:13px}
 #play-btn:hover{color:var(--g)}
+#dl-btn{width:20px;height:20px;display:flex;align-items:center;justify-content:center;
+  background:none;border:none;color:rgba(191,155,70,.65);cursor:pointer;padding:0;
+  margin-left:2px;transition:color .2s;-webkit-tap-highlight-color:transparent}
+#dl-btn:hover{color:var(--g)}
+#dl-btn[disabled]{opacity:.4;cursor:default}
+#dl-btn svg{width:13px;height:13px}
 
 /* ── SOUND BTN ── */
 #snd{position:fixed;top:14px;right:14px;z-index:50;width:36px;height:36px;
@@ -666,6 +672,13 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
      <rect x="14" y="4" width="4" height="16" rx="1"/>
     </svg>
    </button>
+   <button id="dl-btn" aria-label="Download invitation as PDF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+     <polyline points="7 10 12 15 17 10"/>
+     <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+   </button>
   </div>
 
  </div><!-- /card -->
@@ -883,6 +896,82 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
   document.getElementById('card').addEventListener('click', function once() {
     startMusic();
     document.getElementById('card').removeEventListener('click', once);
+  });
+
+  /* ── Pause auto-play while user holds a press on the card ── */
+  var pressActive = false;
+  document.getElementById('card').addEventListener('pointerdown', function (e) {
+    if (e.target.closest('#nav-row') || e.target.closest('#dl-btn')) return;
+    pressActive = true;
+    clearInterval(autoTimer);
+    autoTimer = null;
+  });
+  function resumeAfterPress() {
+    if (!pressActive) return;
+    pressActive = false;
+    if (autoPlaying) startAuto();
+  }
+  document.addEventListener('pointerup',     resumeAfterPress);
+  document.addEventListener('pointercancel', resumeAfterPress);
+
+  /* ── Download all slides as PDF ── */
+  var dlBtn = document.getElementById('dl-btn');
+  var dlDownSVG  = '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>';
+  var dlSpinSVG  = '<circle cx="12" cy="12" r="9" stroke-dasharray="28 56"/><polyline points="12 6 12 12 15 14"/>';
+
+  function loadScript(src, cb) {
+    if (document.querySelector('script[src="' + src + '"]')) { cb(); return; }
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = cb;
+    document.head.appendChild(s);
+  }
+
+  dlBtn.addEventListener('click', function () {
+    if (dlBtn.disabled) return;
+    dlBtn.disabled = true;
+    clearInterval(autoTimer);
+    dlBtn.querySelector('svg').innerHTML = dlSpinSVG;
+
+    function doCapture() {
+      var slideEls = document.querySelectorAll('.slide');
+      var W = slideEls[0].offsetWidth;
+      var H = slideEls[0].offsetHeight;
+      var pdf = new window.jspdf.jsPDF({
+        orientation: H >= W ? 'portrait' : 'landscape',
+        unit: 'px',
+        format: [W, H]
+      });
+      var idx = 0;
+      function next() {
+        if (idx >= slideEls.length) {
+          pdf.save('Walima-Invitation-Moqeet-Ayesha.pdf');
+          dlBtn.querySelector('svg').innerHTML = dlDownSVG;
+          dlBtn.disabled = false;
+          if (autoPlaying) startAuto();
+          return;
+        }
+        html2canvas(slideEls[idx], {
+          useCORS: true,
+          scale: 2,
+          logging: false,
+          backgroundColor: '#FDF8F1'
+        }).then(function (canvas) {
+          var img = canvas.toDataURL('image/jpeg', 0.92);
+          if (idx > 0) pdf.addPage([W, H]);
+          pdf.addImage(img, 'JPEG', 0, 0, W, H, '', 'FAST');
+          idx++;
+          next();
+        });
+      }
+      next();
+    }
+
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', function () {
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', function () {
+        doCapture();
+      });
+    });
   });
 
 })();
