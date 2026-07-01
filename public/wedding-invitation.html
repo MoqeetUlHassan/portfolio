@@ -940,15 +940,21 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
     document.getElementById('dl-btn').click();
   });
 
-  /* first tap starts music; subsequent taps toggle play/pause */
+  /* first interaction anywhere starts music; card taps after that toggle play/pause */
   var musicStarted = false;
+  var musicStartTs  = 0;
+  document.addEventListener('pointerdown', function () {
+    if (!musicStarted && musicOn) {
+      musicStarted = true;
+      musicStartTs  = Date.now();
+      startMusic();
+    }
+  }, { once: true });
+
   document.getElementById('card').addEventListener('click', function (e) {
     if (e.target.closest('#nav-row')) return;
-    if (!musicStarted) {
-      musicStarted = true;
-      startMusic();
-      return;
-    }
+    /* if this click was the gesture that started music, don't also toggle play/pause */
+    if (Date.now() - musicStartTs < 400) return;
     autoPlaying = !autoPlaying;
     applyPlayState();
   });
