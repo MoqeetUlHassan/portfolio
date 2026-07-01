@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="preload" as="image" href="wedding-assets/couple-back.png" />
+<link rel="preload" as="image" href="wedding-assets/couple-back-islamic.png" />
 <link rel="preload" as="image" href="wedding-assets/couple-front.png" />
 <style>
 :root {
@@ -330,7 +330,7 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 
    <!-- Full bleed background photo -->
    <div class="s1-bg">
-    <img src="wedding-assets/couple-back.png" alt="" />
+    <img src="wedding-assets/couple-back-islamic.png" alt="" />
    </div>
    <!-- White gradient fade overlay, dense at top, ~50% at midpoint -->
    <div class="s1-fade"></div>
@@ -821,7 +821,7 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
   }, { passive: true });
 
   /* kick off auto-play — wait for slide 1 background image to be ready */
-  var bgImg = document.querySelector('.s1-bg img');
+  var bgImg = document.querySelector('.s1-bg img'); /* couple-back-islamic.png */
   if (bgImg && bgImg.complete) {
     startAuto();
   } else if (bgImg) {
