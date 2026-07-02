@@ -1203,11 +1203,7 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
             backgroundColor: '#FDF8F1',
             width: W, height: H,
             scrollX: 0, scrollY: 0,
-            windowWidth: W, windowHeight: H,
-            /* Renders via a real browser layout pass instead of html2canvas's
-               own text shaping, which mangles Arabic ligatures/diacritics
-               (e.g. the Bismillah) — this delegates to the browser instead. */
-            foreignObjectRendering: true
+            windowWidth: W, windowHeight: H
           }).then(function (canvas) {
             if (document.body.contains(tmp)) document.body.removeChild(tmp);
             var imgData = canvas.toDataURL('image/jpeg', 0.97);
