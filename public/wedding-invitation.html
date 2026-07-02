@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, target-densitydpi=device-dpi" />
 <title>Moqeet ul Hassan &amp; Ayesha Adnan — Walima</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
-<link rel="preload" as="image" href="wedding-assets/couple-back-islamic.png" />
-<link rel="preload" as="image" href="wedding-assets/couple-front.png" />
 <style>
 :root {
   --g:    #BF9B46;
@@ -49,9 +47,17 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 @keyframes boot{from{opacity:0}to{opacity:1}}
 
 /* ── CARD ── */
-#card{position:relative;width:min(94vw,67.1vh,640px);aspect-ratio:5/7;border-radius:12px;
+#card{position:relative;width:min(94vw,67.1vh);aspect-ratio:5/7;border-radius:12px;
   overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.32),0 0 0 1px rgba(191,155,70,.5);
   container-type:inline-size;background:var(--cream)}
+/* Cap the card's size only on landscape/desktop-shaped screens (wide
+   relative to height) so it doesn't blow up on huge monitors. Skipped on
+   tall/portrait viewports — including narrow ones with an unusually large
+   raw pixel width — so real phones (and phone-shaped emulation) always get
+   the full 94vw fill instead of being clamped like a desktop window. */
+@media (min-aspect-ratio: 3/4) {
+  #card{width:min(94vw,67.1vh,640px)}
+}
 
 /* ── REEL ── */
 #reel{display:flex;width:100%;height:100%;overflow-x:scroll;
@@ -1078,6 +1084,24 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
     sndIcon.innerHTML = musicOn ? sndOn : sndOff;
     if (musicOn) { musicFade(0.75); }
     else { musicFade(0); }
+  });
+
+  /* ── Self-heal images that fail to load ──
+     Some mobile browsers (notably Safari) occasionally fail a same-origin
+     image request once — stale edge cache, memory pressure, a preload/fetch
+     race — even though the resource is fine. Retry with a cache-busting
+     query param before giving up, so a one-off failure doesn't leave a
+     guest looking at a broken-image icon. */
+  document.querySelectorAll('img').forEach(function (img) {
+    var retries = 0;
+    img.addEventListener('error', function () {
+      if (retries >= 2) return;
+      retries++;
+      var base = img.src.split('?')[0];
+      setTimeout(function () {
+        img.src = base + '?retry=' + retries + '-' + Date.now();
+      }, 400 * retries);
+    });
   });
 
   /* ── Preload photos + default music track, then reveal the invitation ── */
