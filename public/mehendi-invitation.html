@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, target-densitydpi=device-dpi" />
+<title>Moqeet ul Hassan — Mehendi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Great+Vibes&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --g:    #E8740C;
+  --g-l:  #F7B81B;
+  --g-d:  rgba(232,116,12,.12);
+  --g-ln: rgba(232,116,12,.32);
+  --cream:#FFF5D6;
+  --br:   #5A1E2E;
+  --br-m: #8A3A50;
+  --br-s: rgba(90,30,46,.48);
+  --fa:   'Scheherazade New','Traditional Arabic',serif;
+  --fd:   'Cinzel Decorative',cursive;
+  --fc:   'Cinzel',serif;
+  --fb:   'Cormorant Garamond',serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoothing:antialiased;color:var(--br)}
+
+/* ── LOADER ── */
+#loader{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  background:radial-gradient(ellipse 130% 110% at 50% 40%,#FFE27A 0%,#F59BB8 100%);
+  transition:opacity .6s ease}
+#loader.hide{opacity:0;pointer-events:none}
+.loader-ring{width:38px;height:38px;border-radius:50%;
+  border:2px solid rgba(232,116,12,.25);border-top-color:var(--g);
+  animation:ldr-spin .9s linear infinite}
+@keyframes ldr-spin{to{transform:rotate(360deg)}}
+.loader-txt{font-family:var(--fc);font-size:clamp(14px,1.6cqw,22px);letter-spacing:.32em;
+  text-transform:uppercase;color:var(--g)}
+
+/* ── STAGE ── */
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse 130% 110% at 50% 40%,#FFE27A 0%,#F59BB8 100%);
+  opacity:0}
+#stage.ready{animation:boot 1.2s ease both}
+@keyframes boot{from{opacity:0}to{opacity:1}}
+
+/* ── CARD ── */
+#card{position:relative;width:min(94vw,67.1vh);aspect-ratio:5/7;border-radius:12px;
+  overflow:hidden;box-shadow:0 50px 120px rgba(0,0,0,.32),0 0 0 1px rgba(232,116,12,.5);
+  container-type:inline-size;background:var(--cream)}
+/* Cap the card's size only on landscape/desktop-shaped screens (wide
+   relative to height) so it doesn't blow up on huge monitors. Skipped on
+   tall/portrait viewports — including narrow ones with an unusually large
+   raw pixel width — so real phones (and phone-shaped emulation) always get
+   the full 94vw fill instead of being clamped like a desktop window. */
+@media (min-aspect-ratio: 3/4) {
+  #card{width:min(94vw,67.1vh,640px)}
+}
+/* Tall phones: a fixed 5:7 card leaves empty bands above and below it while
+   slide 3 has to scroll. Let the card grow into that space (up to 5:8.75)
+   so content fits without an inner scroll. */
+@media (max-aspect-ratio: 3/4) {
+  #card{aspect-ratio:auto;height:min(94vw * 1.75, 84svh);min-height:calc(94vw * 1.4)}
+}
+
+/* ── REEL ── */
+#reel{display:flex;width:100%;height:100%;overflow-x:scroll;
+  scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+#reel::-webkit-scrollbar{display:none}
+
+/* ── SLIDES base ── */
+.slide{flex:none;width:100%;height:100%;scroll-snap-align:start;
+  position:relative;overflow:hidden;background:var(--cream);
+  display:flex;flex-direction:column;align-items:center}
+
+/* gold inner border on all slides */
+.slide::after{content:'';position:absolute;inset:0;z-index:30;
+  border:1px solid rgba(232,116,12,.26);border-radius:12px;pointer-events:none}
+
+/* ── MOSQUE ── */
+.mosque{position:absolute;bottom:0;left:0;right:0;pointer-events:none;z-index:1}
+.mosque svg{display:block;width:100%;height:auto}
+
+/* ── NAV ROW ── */
+#nav-row{position:absolute;bottom:clamp(8px,2.4cqw,14px);left:50%;
+  transform:translateX(-50%);display:flex;align-items:center;gap:6px;z-index:28}
+.dot{width:6px;height:6px;border-radius:3px;background:rgba(232,116,12,.28);
+  border:none;padding:0;cursor:pointer;
+  transition:all .35s cubic-bezier(.4,0,.2,1);-webkit-tap-highlight-color:transparent}
+.dot.active{width:20px;background:var(--g)}
+.nav-icon-btn{width:clamp(26px,7.5cqw,34px);height:clamp(26px,7.5cqw,34px);
+  display:flex;align-items:center;justify-content:center;
+  background:none;border:none;color:#111;cursor:pointer;padding:0;margin-left:2px;
+  text-decoration:none;transition:color .2s,opacity .2s;-webkit-tap-highlight-color:transparent}
+.nav-icon-btn:hover{color:var(--g)}
+.nav-icon-btn[disabled]{opacity:.4;cursor:default}
+.nav-icon-btn svg{width:clamp(15px,4.4cqw,20px);height:clamp(15px,4.4cqw,20px)}
+#play-btn{margin-left:4px}
+.trk-toast{position:absolute;bottom:calc(100% + 7px);left:50%;
+  transform:translateX(-50%);white-space:nowrap;pointer-events:none;
+  font-family:var(--fc);font-size:clamp(14px,1.7cqw,22px);letter-spacing:.14em;
+  color:var(--br);background:rgba(255,245,214,.95);
+  border:1px solid rgba(232,116,12,.32);border-radius:20px;
+  padding:3px clamp(8px,2cqw,12px);
+  opacity:0;transition:opacity .3s}
+.trk-toast.show{opacity:1}
+
+/* ── SOUND BTN ── */
+#snd{position:fixed;top:14px;right:14px;z-index:50;width:36px;height:36px;
+  border-radius:50%;border:1px solid rgba(232,116,12,.45);
+  background:rgba(255,245,214,.82);backdrop-filter:blur(8px);
+  color:var(--g);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .2s;-webkit-tap-highlight-color:transparent}
+#snd svg{width:16px;height:16px}
+#snd.pulse{animation:snd-pulse 1.6s ease-in-out infinite}
+@keyframes snd-pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,116,12,.45)}50%{box-shadow:0 0 0 8px rgba(232,116,12,0)}}
+
+#tap-hint{position:fixed;top:19px;right:58px;z-index:50;
+  font-family:var(--fc);font-size:clamp(14px,1.6cqw,22px);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--br);background:rgba(255,245,214,.92);
+  border:1px solid rgba(232,116,12,.4);border-radius:20px;
+  padding:6px 12px;white-space:nowrap;pointer-events:none;
+  opacity:0;transform:translateY(-4px);
+  transition:opacity .4s ease, transform .4s ease}
+#tap-hint.show{opacity:1;transform:none}
+
+/* ── GOLD PARTICLES (all slides) ── */
+.slide-pts{position:absolute;inset:0;pointer-events:none;z-index:2;overflow:hidden}
+.gp{position:absolute;border-radius:50%;background:var(--g-l);animation:gp-rise linear infinite}
+@keyframes gp-rise{
+  0%{transform:translateY(0) scale(1);opacity:0}
+  8%{opacity:1} 88%{opacity:.55}
+  100%{transform:translateY(-820px) scale(.12);opacity:0}}
+
+/* ── ENTRANCE ANIMS ── */
+.se{opacity:0;transform:translateY(14px);
+  transition:opacity .72s ease,transform .72s cubic-bezier(.18,.82,.2,1)}
+.se.show{opacity:1;transform:none}
+.se.d1{transition-delay:.07s}.se.d2{transition-delay:.16s}.se.d3{transition-delay:.27s}
+.se.d4{transition-delay:.40s}.se.d5{transition-delay:.55s}.se.d6{transition-delay:.72s}
+
+/* ── DIVIDER ── */
+.gdiv{display:flex;align-items:center;justify-content:center;gap:.55em;width:100%;color:var(--g)}
+.gdiv .l{flex:1;max-width:clamp(16px,11cqw,60px);height:1px;
+  background:linear-gradient(90deg,transparent,var(--g-ln))}
+.gdiv .r{flex:1;max-width:clamp(16px,11cqw,60px);height:1px;
+  background:linear-gradient(90deg,var(--g-ln),transparent)}
+.gdiv svg{width:clamp(7px,2.2cqw,10px);height:clamp(7px,2.2cqw,10px);flex-shrink:0}
+
+/* ══════════════════════════════
+   SLIDE 1 — full-bleed photo
+══════════════════════════════ */
+#s1{justify-content:flex-start;
+  padding:clamp(14px,4cqw,26px) clamp(12px,5cqw,28px) clamp(44px,11cqw,64px)}
+
+/* Full-bleed background photo */
+.s1-bg{position:absolute;inset:0;z-index:0}
+.s1-bg img{width:100%;height:100%;display:block;object-fit:cover;
+  object-position:center 10%;user-select:none;pointer-events:none}
+
+/* Two-layer fade: white from top (text area) + solid cream from bottom (covers figures).
+   Both reach transparent at ~45–50% so a narrow atmospheric window stays at centre. */
+.s1-fade{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:
+    linear-gradient(to bottom, rgba(255,255,255,.97) 0%, rgba(255,255,255,0) 44%),
+    linear-gradient(to top,    rgba(255,245,214,.99) 0%, rgba(255,245,214,0) 48%)}
+
+
+/* Content on top of fade */
+.s1-bsm{position:relative;z-index:3;width:100%;text-align:center;margin-top:2cqw}
+.s1-bsm .ar{font-family:var(--fa);font-size:clamp(16px,3.6cqw,29px);
+  color:var(--g);direction:rtl;line-height:1.6;font-weight:400;
+  letter-spacing:.08em;word-spacing:.3em}
+
+.s1-vrs{position:relative;z-index:3;width:100%;text-align:center;margin-top:clamp(4px,1.3cqw,8px)}
+.s1-vrs .ar{font-family:var(--fa);font-size:clamp(17px,5.8cqw,46px);
+  font-weight:700;color:var(--br);direction:rtl;line-height:1.55}
+.s1-vrs .en{font-family:var(--fb);font-style:italic;
+  font-size:clamp(16px,2.8cqw,25px);color:#000;margin-top:.3em;line-height:1.45}
+.s1-vrs .ref{font-family:var(--fc);font-weight:700;font-size:clamp(14px,1.9cqw,22px);
+  letter-spacing:.22em;color:#000;margin-top:.35em;opacity:1}
+
+.s1-div{position:relative;z-index:3;width:100%;margin:clamp(6px,1.8cqw,11px) 0}
+
+/* Wrapper carries the centering transform — keeps it separate from .se animation
+   (.se.show resets transform:none which would break translate(-50%,-50%) if on same el) */
+.s1-names-anchor{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  z-index:3;width:86%;text-align:center;
+  background:rgba(255,255,255,.78);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-radius:12px;border:1px solid rgba(232,116,12,.35);
+  padding:clamp(10px,2.8cqw,18px) clamp(16px,5cqw,30px)}
+.s1-names{text-align:center}
+.s1-names .n{font-family:var(--fd);font-weight:700;font-size:clamp(16px,4.5cqw,36px);
+  color:var(--g);display:block;line-height:1.25}
+.s1-names .amp{font-family:var(--fb);font-style:italic;font-weight:600;
+  font-size:clamp(16px,3.2cqw,25px);color:var(--g);display:block;margin:.06em 0}
+
+.swipe-hint{position:absolute;bottom:clamp(26px,7cqw,42px);right:clamp(10px,3cqw,18px);
+  font-family:var(--fc);font-size:clamp(14px,1.55cqw,22px);
+  letter-spacing:.22em;text-transform:uppercase;color:rgba(232,116,12,.7);
+  display:flex;align-items:center;gap:.45em;animation:hint 2.5s ease-in-out infinite;z-index:5}
+@keyframes hint{0%,100%{opacity:.35}60%{opacity:1}}
+.swipe-hint svg{width:10px;height:10px}
+
+/* ══════════════════════════════
+   SLIDE 2 — frosted text top + full-opacity photo below, framed by the
+   floral arch (arch z-index sits under the photo/text so it still
+   frames whatever peeks out around them)
+══════════════════════════════ */
+#s2{justify-content:flex-start;
+  padding:clamp(6px,1.8cqw,10px) clamp(10px,4cqw,22px) clamp(38px,11cqw,64px);
+  gap:clamp(8px,2.2cqw,13px)}
+
+/* Scroll fallback: on very small screens (e.g. iPhone SE) the text card +
+   photo can exceed the fixed 5:7 card height. This wrapper scrolls instead
+   of letting .slide's overflow:hidden clip/crop the couple's photo. */
+.s2-scroll{position:relative;z-index:2;width:100%;flex:1;min-height:0;
+  display:flex;flex-direction:column;align-items:center;gap:inherit;
+  overflow-y:auto;overflow-x:hidden}
+
+/* Frosted glass text card, pushed to top of slide */
+.s2-glass{position:relative;z-index:3;width:100%;flex:none;
+  background:rgba(255,255,255,.58);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-radius:10px;border:1px solid rgba(232,116,12,.2);
+  padding:clamp(10px,2.8cqw,18px) clamp(12px,3.2cqw,20px);
+  text-align:center}
+
+/* Photo: fills all remaining height, anchored bottom so feet show at the bottom */
+.s2-photo{position:relative;z-index:3;width:92%;flex:1;min-height:clamp(100px,40cqw,190px)}
+.s2-photo img{width:100%;height:100%;display:block;object-fit:cover;
+  object-position:center 12%;border-radius:4px;user-select:none;pointer-events:none}
+
+/* Floral arch SVG overlay */
+.floral-arch{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+
+/* Slide 2 content */
+.s2-head{position:relative;z-index:3;width:100%;text-align:center}
+.s2-head .label{font-family:var(--fc);font-size:clamp(14px,1.8cqw,22px);
+  letter-spacing:.38em;text-transform:uppercase;color:rgba(232,116,12,.75)}
+.s2-head .sub{font-family:var(--fb);font-style:italic;
+  font-size:clamp(16px,2.8cqw,25px);color:var(--br-m);margin-top:.28em}
+
+.s2-div{position:relative;z-index:3;width:100%;margin:clamp(6px,1.7cqw,10px) 0}
+
+.s2-names{position:relative;z-index:3;text-align:center;
+  margin:clamp(5px,1.4cqw,9px) 0}
+.s2-names .groom,.s2-names .bride{font-family:var(--fd);font-size:clamp(16px,3.8cqw,31px);
+  font-weight:700;color:var(--g);display:block;line-height:1.25}
+.s2-names .amp{font-family:var(--fb);font-style:italic;
+  font-size:clamp(16px,3cqw,24px);color:var(--br-m);display:block;margin:.04em 0}
+
+.s2-family{position:relative;z-index:3;width:100%;text-align:center}
+.s2-family .parents{font-family:var(--fb);font-weight:600;
+  font-size:clamp(16px,2.7cqw,25px);color:var(--br);line-height:1.45;
+  margin:clamp(5px,1.4cqw,9px) 0}
+.s2-family .conn,.s2-family .dau{font-family:var(--fb);font-style:italic;
+  font-size:clamp(16px,2.4cqw,25px);color:var(--br-m);
+  margin:clamp(5px,1.4cqw,9px) 0}
+
+/* ══════════════════════════════
+   SLIDE 3 — DETAILS + CALENDAR
+══════════════════════════════ */
+#s3{justify-content:flex-start;
+  padding:clamp(14px,3.8cqw,24px) clamp(12px,4.5cqw,26px) clamp(38px,11cqw,64px)}
+
+/* Scroll fallback: on very small screens (e.g. iPhone SE) the calendar +
+   time + venue content can exceed the fixed 5:7 card height. Rather than
+   letting .slide's overflow:hidden silently clip the venue box, this inner
+   wrapper scrolls instead — nothing is ever unreachable. */
+.s3-scroll{position:relative;z-index:2;width:100%;flex:1;min-height:0;
+  display:flex;flex-direction:column;align-items:center;
+  overflow-y:auto;overflow-x:hidden}
+
+/* slide 3 warm glow */
+#s3::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 130% 60% at 50% 0%,
+    rgba(255,255,255,.88) 0%,rgba(255,245,214,.4) 55%,transparent 100%)}
+
+.s3-title{position:relative;z-index:2;width:100%;text-align:center}
+.s3-title .head{font-family:var(--fd);font-size:clamp(16px,3.8cqw,31px);
+  color:var(--br);letter-spacing:.06em}
+.s3-title .date{font-family:var(--fc);font-size:clamp(16px,2cqw,25px);
+  letter-spacing:.24em;text-transform:uppercase;color:rgba(232,116,12,.68);
+  display:block;margin-top:.35em}
+
+.s3-div{position:relative;z-index:2;width:100%;margin:clamp(3px,1cqw,6px) 0}
+
+/* ── CALENDAR WIDGET — outline/ghost style, centred in top half ── */
+.cal{position:relative;z-index:2;width:78%;align-self:center;
+  border-radius:10px;overflow:visible;
+  border:1px solid rgba(232,116,12,.36);background:transparent}
+
+.cal-hdr{background:transparent;
+  border-bottom:1px solid rgba(232,116,12,.28);
+  padding:clamp(7px,2cqw,18px) clamp(10px,2.8cqw,25px);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;row-gap:4px}
+.cal-hdr .month{font-family:var(--fd);font-size:clamp(13px,3.8cqw,31px);color:var(--g)}
+.cal-hdr .yr{font-family:var(--fc);font-size:clamp(12px,2.6cqw,25px);
+  color:rgba(232,116,12,.72);margin-left:.5em}
+.cal-badge{font-family:var(--fc);font-size:clamp(11px,1.7cqw,22px);
+  letter-spacing:.2em;color:var(--g);border:1px solid rgba(232,116,12,.4);
+  padding:2px clamp(5px,1.4cqw,11px);border-radius:20px;white-space:nowrap}
+
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);
+  background:transparent;padding:clamp(4px,1.2cqw,10px) clamp(5px,1.4cqw,11px);
+  gap:clamp(1px,.5cqw,4px)}
+.cal-dname{font-family:var(--fc);font-size:clamp(11px,1.6cqw,22px);
+  letter-spacing:.08em;color:var(--g);text-align:center;
+  padding:clamp(2px,.7cqw,6px) 0;border-bottom:1px solid rgba(232,116,12,.15)}
+.cal-d{font-family:var(--fb);font-size:clamp(12px,2.5cqw,25px);color:var(--br);
+  text-align:center;display:flex;align-items:center;justify-content:center;
+  aspect-ratio:1.25;border-radius:50%;line-height:1;font-weight:400}
+.cal-d.hi{background:radial-gradient(circle at 34% 28%,var(--g-l),var(--g) 72%);
+  color:#fff;font-weight:800;position:relative;z-index:5;
+  font-size:clamp(12px,3.4cqw,27px);
+  transform:rotate(-10deg) scale(1.3) translate(-20%,-5%);
+  text-shadow:0 1px 2px rgba(90,30,46,.35);
+  box-shadow:0 4px 14px rgba(232,116,12,.5),
+    0 0 0 3px rgba(255,245,214,.95),0 0 0 4.5px rgba(232,116,12,.55);
+  animation:hi-glow 2.8s ease-in-out infinite}
+.cal-d.hi::before{content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:1px solid rgba(232,116,12,.5);pointer-events:none;
+  animation:hi-ring 2.8s ease-out infinite}
+.cal-d.hi::after{content:'♥';position:absolute;top:-7px;left:50%;
+  transform:translateX(-50%);font-size:clamp(5px,1.2cqw,7px);color:var(--g);opacity:.9;
+  filter:drop-shadow(0 1px 1px rgba(90,30,46,.3))}
+@keyframes hi-glow{
+  0%,100%{box-shadow:0 4px 14px rgba(232,116,12,.45),
+    0 0 0 3px rgba(255,245,214,.95),0 0 0 4.5px rgba(232,116,12,.5)}
+  50%{box-shadow:0 6px 20px rgba(232,116,12,.72),
+    0 0 0 3px rgba(255,245,214,.95),0 0 0 4.5px rgba(232,116,12,.78)}
+}
+@keyframes hi-ring{
+  0%{transform:scale(.75);opacity:.7}
+  70%{transform:scale(1.55);opacity:0}
+  100%{opacity:0}
+}
+.cal-d.dim{color:rgba(90,30,46,.2)}
+
+/* ── ADD TO CALENDAR BUTTON ── */
+.cal-add{position:relative;z-index:2;align-self:center;cursor:pointer;
+  margin:clamp(5px,1.6cqw,14px) 0 clamp(8px,2cqw,14px);max-width:100%;white-space:nowrap;
+  font-family:var(--fc);font-size:clamp(12px,1.9cqw,20px);
+  letter-spacing:clamp(.08em,.5cqw,.18em);text-transform:uppercase;color:#fff;font-weight:600;
+  background:radial-gradient(circle at 34% 28%,var(--g-l),var(--g) 72%);
+  border:none;text-shadow:0 1px 2px rgba(90,30,46,.35);
+  box-shadow:0 4px 10px rgba(232,116,12,.45);
+  border-radius:20px;padding:clamp(5px,1.3cqw,11px) clamp(12px,3.2cqw,26px);
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  transition:transform .2s,box-shadow .2s}
+.cal-add:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(232,116,12,.55)}
+.cal-add:active{transform:translateY(1px);box-shadow:0 2px 6px rgba(232,116,12,.4)}
+
+/* never let flex squash slide-3 blocks into each other — the
+   .s3-scroll wrapper scrolls instead */
+.s3-scroll>*{flex-shrink:0}
+
+/* small cards (phones): font floors stop text shrinking, so compact the
+   calendar's geometry and the button instead */
+@container (max-width:400px){
+  .cal{width:72%}
+  .cal-hdr{padding:5px 9px}
+  .cal-grid{padding:3px 6px;gap:0}
+  .cal-dname{padding:1px 0}
+  .cal-d{aspect-ratio:1.7}
+  .cal-d.hi{transform:rotate(-10deg) scale(1.15) translate(-15%,-5%)}
+  .cal-add{font-size:11px;letter-spacing:.08em;padding:4px 12px;margin:5px 0 8px;
+    box-shadow:0 3px 7px rgba(232,116,12,.4)}
+  #s3{padding-top:10px;padding-bottom:34px}
+  .s3-title .date{margin-top:.15em}
+  .s3-div{margin:1px 0}
+  .time-box{padding:6px 8px}
+  .venue-row{margin-top:7px;padding:8px 10px}
+  .venue-link{margin-top:5px;padding:3px 10px}
+}
+/* tall phones get a taller card (see #card) — spend that room on a
+   bigger calendar instead of an empty gap */
+@media (max-aspect-ratio: 3/4) and (min-height: 740px) {
+  @container (max-width:400px){
+    .cal{width:82%}
+    .cal-d{aspect-ratio:1.3}
+    .cal-grid{padding:5px 8px}
+    .cal-add{margin:10px 0}
+  }
+}
+
+/* ── TIME ROW — margin-top:auto pushes this + venue to lower 1/3 ── */
+.time-row{position:relative;z-index:2;width:100%;display:flex;gap:clamp(8px,2.2cqw,18px);
+  margin-top:auto}
+.time-box{flex:1;border:1px solid rgba(232,116,12,.28);border-radius:9px;
+  padding:clamp(10px,2.8cqw,24px) clamp(10px,2.8cqw,24px);
+  background:rgba(255,245,214,.6);text-align:center}
+.time-box .tlbl{font-family:var(--fc);font-size:clamp(14px,2cqw,22px);
+  letter-spacing:.28em;text-transform:uppercase;color:var(--g);display:block}
+.time-box .tval{font-family:var(--fb);font-weight:600;
+  font-size:clamp(16px,3.8cqw,31px);color:var(--br);display:block;margin-top:.2em}
+
+/* ── VENUE ROW ── */
+.venue-row{position:relative;z-index:2;width:100%;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(8px,2.4cqw,19px);margin-top:clamp(9px,2.4cqw,19px);
+  border:1px solid rgba(232,116,12,.28);border-radius:9px;
+  padding:clamp(11px,3cqw,25px) clamp(12px,3.2cqw,28px);
+  background:rgba(255,245,214,.6)}
+.venue-text{flex:1}
+.venue-lbl{font-family:var(--fc);font-size:clamp(14px,2cqw,22px);
+  letter-spacing:.28em;text-transform:uppercase;color:var(--g);display:block;margin-bottom:.3em}
+.venue-name{font-family:var(--fb);font-weight:600;
+  font-size:clamp(16px,3.8cqw,31px);color:var(--br)}
+.venue-city{font-family:var(--fb);font-style:italic;
+  font-size:clamp(12px,2.4cqw,16px);color:var(--br-m);display:block;margin-top:2px;line-height:1.35}
+.venue-link{font-family:var(--fc);font-weight:600;white-space:nowrap;
+  font-size:clamp(11px,1.8cqw,18px);letter-spacing:.1em;text-transform:uppercase;
+  color:#fff;text-decoration:none;display:inline-block;
+  margin-top:clamp(6px,1.6cqw,12px);
+  padding:clamp(4px,1.2cqw,9px) clamp(11px,2.8cqw,22px);border-radius:20px;
+  background:radial-gradient(circle at 34% 28%,var(--g-l),var(--g) 72%);
+  text-shadow:0 1px 2px rgba(90,30,46,.35);
+  box-shadow:0 3px 8px rgba(232,116,12,.4);
+  -webkit-tap-highlight-color:transparent;transition:transform .2s,box-shadow .2s}
+.venue-link:hover{transform:translateY(-1px);box-shadow:0 5px 12px rgba(232,116,12,.5)}
+.venue-link:active{transform:translateY(1px);box-shadow:0 2px 5px rgba(232,116,12,.4)}
+.qr{background:#fff;padding:6px;border-radius:7px;
+  border:1px solid rgba(232,116,12,.3);line-height:0}
+.qr img{display:block;width:clamp(56px,12.5cqw,118px);height:auto}
+
+/* ══════════════════════════════
+   SLIDE 4 — BLESSING (centered)
+══════════════════════════════ */
+#s4{justify-content:center;
+  padding:clamp(14px,3.8cqw,26px) clamp(12px,5cqw,28px) clamp(44px,13cqw,72px)}
+
+#s4::before{content:'';position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 130% 60% at 50% 0%,
+    rgba(255,255,255,.88) 0%,rgba(255,245,214,.4) 55%,transparent 100%)}
+
+/* Scroll fallback: on very small screens the dua + body text + two buttons
+   can exceed the fixed 5:7 card height. Top-aligned (not centered) so any
+   overflow is predictably at the bottom and reachable by scrolling. */
+.s4-scroll{position:relative;z-index:2;width:100%;flex:1;min-height:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  overflow-y:auto;overflow-x:hidden}
+
+.s4-dua{position:relative;z-index:2;width:100%;text-align:center}
+.s4-dua .ar{font-family:var(--fa);font-size:clamp(16px,4.6cqw,38px);
+  color:var(--g);direction:rtl;line-height:1.85;font-weight:400}
+.s4-dua .en{font-family:var(--fb);font-style:italic;
+  font-size:clamp(16px,2.5cqw,25px);color:var(--br-m);line-height:1.55;margin-top:.4em}
+.s4-dua .ref{font-family:var(--fc);font-size:clamp(14px,1.8cqw,22px);
+  letter-spacing:.2em;color:var(--g);margin-top:.3em;opacity:.8}
+
+.s4-div{position:relative;z-index:2;width:100%;margin:clamp(8px,2.2cqw,14px) 0}
+
+.s4-body{position:relative;z-index:2;width:100%;text-align:center}
+.s4-body .msg{font-family:var(--fb);font-style:italic;
+  font-size:clamp(16px,2.6cqw,25px);color:var(--br-m);line-height:1.65}
+.s4-body .await{font-family:var(--fb);font-style:italic;
+  font-size:clamp(16px,2.8cqw,25px);font-weight:600;color:var(--br);
+  display:block;margin-top:.6em}
+.s4-body .sig{font-family:var(--fd);font-size:clamp(16px,4cqw,32px);
+  color:var(--g);display:block;margin-top:.55em;letter-spacing:.04em}
+.s4-body .dt{font-family:var(--fc);font-size:clamp(16px,2cqw,25px);
+  letter-spacing:.24em;color:rgba(232,116,12,.68);display:block;margin-top:.3em}
+
+.s4-dl{position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;gap:.55em;
+  margin-top:clamp(8px,3.8cqw,24px);
+  width:76%;
+  padding:clamp(8px,2.8cqw,16px) clamp(14px,4.5cqw,28px);
+  background:var(--g);border:none;border-radius:8px;
+  font-family:var(--fc);font-size:clamp(13px,2.2cqw,22px);
+  letter-spacing:.18em;text-transform:uppercase;color:#fff;
+  cursor:pointer;transition:opacity .18s, transform .18s;
+  -webkit-tap-highlight-color:transparent;box-shadow:0 6px 22px rgba(232,116,12,.35)}
+.s4-dl:hover{opacity:.88}
+.s4-dl:active{transform:scale(.97)}
+.s4-dl svg{width:clamp(12px,3cqw,16px);height:clamp(12px,3cqw,16px);flex-shrink:0}
+.s4-dl.outline{margin-top:clamp(8px,2.2cqw,13px);
+  background:transparent;color:var(--g);border:1.5px solid var(--g);
+  box-shadow:none}
+.s4-dl.outline:hover{opacity:1;background:rgba(232,116,12,.08)}
+
+.s1-title{position:relative;z-index:3;width:100%;text-align:center;margin-top:clamp(10px,4cqw,30px)}
+.s1-title .t{font-family:'Great Vibes',cursive;font-size:clamp(44px,15cqw,110px);line-height:1.1;
+  color:var(--pk);text-shadow:0 2px 0 rgba(255,245,214,.9),0 4px 14px rgba(232,116,12,.35)}
+/* transparent cut-out: show the whole couple, feet on the bottom */
+.s2-photo img{object-fit:contain;object-position:center bottom;border-radius:0;
+  filter:drop-shadow(0 10px 18px rgba(90,30,46,.18))}
+/* cover: cut-out couple sits on the lower part of the card, names box
+   flows under the title instead of floating over their faces */
+.s1-bg{top:auto;bottom:clamp(30px,8cqw,46px);height:60%;left:3%;right:3%}
+.s1-bg img{object-fit:contain;object-position:center bottom;
+  filter:drop-shadow(0 12px 20px rgba(90,30,46,.2))}
+.s1-fade{display:none}
+.s1-names-anchor{position:relative;top:auto;left:auto;transform:none;
+  width:86%;margin-top:clamp(4px,1.5cqw,10px)}
+/* ── MEHENDI ACCENTS: pink names + highlight, marigold/pink/orange band ── */
+:root{--pk:#E0457B;--pk-l:#F27AA3}
+.s1-names .n,.s2-names .groom,.s4-body .sig,.cal-hdr .month{color:var(--pk)}
+.cal-d.hi{background:radial-gradient(circle at 34% 28%,var(--pk-l),var(--pk) 72%)}
+.cal-d.hi::after{color:var(--pk)}
+.dot.active{background:var(--pk)}
+.gp:nth-child(3n){background:var(--pk-l)}
+.gp:nth-child(3n+1){background:#F7B81B}
+#card::before{content:'';position:absolute;top:0;left:0;right:0;height:clamp(6px,1.6cqw,10px);z-index:40;pointer-events:none;
+  background:repeating-linear-gradient(90deg,#F7B81B 0 24px,#E0457B 24px 48px,#E8740C 48px 72px)}
+</style>
+</head>
+<body>
+<div id="loader">
+ <div class="loader-ring"></div>
+ <div class="loader-txt">Preparing your invitation</div>
+</div>
+<div id="stage">
+ <div id="card">
+  <div id="reel">
+
+  <!-- ══ SLIDE 1 — COVER (full-bleed photo + 50% fade) ══ -->
+  <div class="slide" id="s1">
+
+   <!-- Full bleed background photo -->
+   <div class="s1-bg">
+    <img src="mehendi-assets/cover.webp" alt="" />
+   </div>
+   <!-- White gradient fade overlay, dense at top, ~50% at midpoint -->
+   <div class="s1-fade"></div>
+
+   <!-- Gold floating particles -->
+   <div class="slide-pts"></div>
+
+   <div class="s1-title se">
+    <div class="t">Mehendi Night</div>
+   </div>
+
+   <div class="s1-div se d1">
+    <div class="gdiv"><span class="l"></span>
+     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.2-9C1 8.4 2.6 5 6 5c2 0 3.2 1.2 4 2.4C10.8 6.2 12 5 14 5c3.4 0 5 3.4 3.2 7-2.2 4.5-9.2 9-9.2 9z"/></svg>
+    <span class="r"></span></div>
+   </div>
+
+   <!-- Anchor holds centering transform; inner div holds entrance animation -->
+   <div class="s1-names-anchor">
+    <div class="s1-names se d4">
+     <span class="amp">The Mehendi of</span>
+     <span class="n">Moqeet ul Hassan</span>
+    </div>
+   </div>
+
+   <div class="swipe-hint se d5">
+    Swipe
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+     <path d="M5 12h14M12 5l7 7-7 7"/>
+    </svg>
+   </div>
+
+  </div><!-- /s1 -->
+
+  <!-- ══ SLIDE 2 — THE COUPLE (frosted text top, photo centered below) ══ -->
+  <div class="slide" id="s2">
+   <div class="slide-pts"></div>
+
+   <!-- Floral arch SVG overlay (absolute, behind everything) -->
+   <svg class="floral-arch" viewBox="0 0 500 700" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <!-- Arch path guide -->
+    <path d="M 62,700 C 62,220 198,30 250,30 C 302,30 438,220 438,700"
+      fill="none" stroke="rgba(232,116,12,.16)" stroke-width="1.2"/>
+
+    <!-- ── PEAK CLUSTER (250, 30) ── -->
+    <g transform="translate(250,24)">
+     <ellipse rx="12" ry="19" fill="rgba(236,72,128,.48)"/>
+     <ellipse rx="12" ry="19" fill="rgba(236,72,128,.48)" transform="rotate(60)"/>
+     <ellipse rx="12" ry="19" fill="rgba(236,72,128,.48)" transform="rotate(120)"/>
+     <ellipse rx="12" ry="19" fill="rgba(236,72,128,.48)" transform="rotate(180)"/>
+     <ellipse rx="12" ry="19" fill="rgba(236,72,128,.48)" transform="rotate(240)"/>
+     <ellipse rx="12" ry="19" fill="rgba(236,72,128,.48)" transform="rotate(300)"/>
+     <circle r="9" fill="rgba(255,236,150,.9)"/>
+     <circle r="5" fill="rgba(232,116,12,.72)"/>
+    </g>
+
+    <!-- Small bud left of peak (183, 50) -->
+    <g transform="translate(183,50) rotate(-28)">
+     <ellipse rx="6" ry="10" fill="rgba(236,72,128,.38)"/>
+     <ellipse rx="6" ry="10" fill="rgba(236,72,128,.38)" transform="rotate(60)"/>
+     <ellipse rx="6" ry="10" fill="rgba(236,72,128,.38)" transform="rotate(120)"/>
+     <circle r="4" fill="rgba(255,236,150,.82)"/>
+     <circle r="2.5" fill="rgba(232,116,12,.6)"/>
+    </g>
+
+    <!-- Small bud right of peak (317, 50) -->
+    <g transform="translate(317,50) rotate(28)">
+     <ellipse rx="6" ry="10" fill="rgba(236,72,128,.38)"/>
+     <ellipse rx="6" ry="10" fill="rgba(236,72,128,.38)" transform="rotate(60)"/>
+     <ellipse rx="6" ry="10" fill="rgba(236,72,128,.38)" transform="rotate(120)"/>
+     <circle r="4" fill="rgba(255,236,150,.82)"/>
+     <circle r="2.5" fill="rgba(232,116,12,.6)"/>
+    </g>
+
+    <!-- Leaves near peak -->
+    <path d="M0,0 Q-6,-14 0,-25 Q6,-14 0,0" fill="rgba(96,150,60,.42)" transform="translate(220,55) rotate(-18)"/>
+    <path d="M0,0 Q-6,-14 0,-25 Q6,-14 0,0" fill="rgba(96,150,60,.42)" transform="translate(280,55) rotate(18)"/>
+
+    <!-- ── LEFT UPPER FLOWER (140, 135) ── -->
+    <g transform="translate(140,135) rotate(-18)">
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(60)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(120)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(180)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(240)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(300)"/>
+     <circle r="7" fill="rgba(255,236,150,.85)"/>
+     <circle r="4" fill="rgba(232,116,12,.65)"/>
+    </g>
+
+    <!-- ── RIGHT UPPER FLOWER (360, 135) ── -->
+    <g transform="translate(360,135) rotate(18)">
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(60)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(120)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(180)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(240)"/>
+     <ellipse rx="9" ry="15" fill="rgba(236,72,128,.43)" transform="rotate(300)"/>
+     <circle r="7" fill="rgba(255,236,150,.85)"/>
+     <circle r="4" fill="rgba(232,116,12,.65)"/>
+    </g>
+
+    <!-- Leaves left/right upper -->
+    <path d="M0,0 Q-5,-12 0,-23 Q5,-12 0,0" fill="rgba(96,150,60,.38)" transform="translate(165,100) rotate(-42)"/>
+    <path d="M0,0 Q-5,-12 0,-23 Q5,-12 0,0" fill="rgba(96,150,60,.38)" transform="translate(110,182) rotate(-52)"/>
+    <path d="M0,0 Q-5,-12 0,-23 Q5,-12 0,0" fill="rgba(96,150,60,.38)" transform="translate(335,100) rotate(42)"/>
+    <path d="M0,0 Q-5,-12 0,-23 Q5,-12 0,0" fill="rgba(96,150,60,.38)" transform="translate(390,182) rotate(52)"/>
+
+    <!-- ── LEFT MID FLOWER (87, 290) ── -->
+    <g transform="translate(87,290) rotate(-26)">
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(60)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(120)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(180)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(240)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(300)"/>
+     <circle r="5" fill="rgba(255,236,150,.8)"/>
+     <circle r="3" fill="rgba(232,116,12,.55)"/>
+    </g>
+
+    <!-- ── RIGHT MID FLOWER (413, 290) ── -->
+    <g transform="translate(413,290) rotate(26)">
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(60)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(120)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(180)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(240)"/>
+     <ellipse rx="7" ry="11" fill="rgba(236,72,128,.35)" transform="rotate(300)"/>
+     <circle r="5" fill="rgba(255,236,150,.8)"/>
+     <circle r="3" fill="rgba(232,116,12,.55)"/>
+    </g>
+
+    <!-- ── LEFT LOWER SMALL BUDS ── -->
+    <g transform="translate(70,430) rotate(-32)">
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)"/>
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)" transform="rotate(72)"/>
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)" transform="rotate(144)"/>
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)" transform="rotate(216)"/>
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)" transform="rotate(288)"/>
+     <circle r="3.5" fill="rgba(255,236,150,.75)"/>
+    </g>
+    <!-- ── RIGHT LOWER SMALL BUDS ── -->
+    <g transform="translate(430,430) rotate(32)">
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)"/>
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)" transform="rotate(72)"/>
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)" transform="rotate(144)"/>
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)" transform="rotate(216)"/>
+     <ellipse rx="5" ry="8" fill="rgba(236,72,128,.28)" transform="rotate(288)"/>
+     <circle r="3.5" fill="rgba(255,236,150,.75)"/>
+    </g>
+
+    <!-- Scattered tiny leaf buds -->
+    <path d="M0,0 Q-4,-9 0,-17 Q4,-9 0,0" fill="rgba(96,150,60,.3)" transform="translate(76,360) rotate(-38)"/>
+    <path d="M0,0 Q-4,-9 0,-17 Q4,-9 0,0" fill="rgba(96,150,60,.3)" transform="translate(424,360) rotate(38)"/>
+   </svg>
+
+   <div class="s2-scroll">
+   <!-- Frosted glass text card — upper portion -->
+   <div class="s2-glass se">
+    <div class="s2-head">
+     <div class="label">With great joy</div>
+     <div class="sub">Henna, music &amp; celebration</div>
+    </div>
+    <div class="s2-div" style="margin:clamp(5px,1.5cqw,9px) 0">
+     <div class="gdiv"><span class="l"></span>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+     <span class="r"></span></div>
+    </div>
+    <div class="s2-family">
+     <div class="parents">Begum &amp; Sqn Ldr (R) Syed Muhammad Zafar Yusuf</div>
+     <div class="conn">request the pleasure of your company at the Mehendi of their son</div>
+    </div>
+    <div class="s2-names">
+     <span class="groom">Moqeet ul Hassan</span>
+    </div>
+   </div>
+
+   <!-- Couple photo — centered in flow, below text, full opacity -->
+   <div class="s2-photo se d1">
+    <img src="mehendi-assets/couple-front.webp" alt="Moqeet ul Hassan" />
+   </div>
+   </div><!-- /s2-scroll -->
+
+  </div><!-- /s2 -->
+
+  <!-- ══ SLIDE 3 — DETAILS + CALENDAR ══ -->
+  <div class="slide" id="s3">
+   <div class="slide-pts"></div>
+
+   <div class="s3-scroll">
+   <div class="s3-title se">
+    <div class="head">The Celebration</div>
+    <span class="date">Friday, 27 November 2026</span>
+   </div>
+
+   <div class="s3-div se d1">
+    <div class="gdiv"><span class="l"></span>
+     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/></svg>
+    <span class="r"></span></div>
+   </div>
+
+   <!-- Calendar widget — November 2026 (Nov 1 = Sunday) -->
+   <div class="cal se d2">
+    <div class="cal-hdr">
+     <div><span class="month">November</span><span class="yr">2026</span></div>
+     <div class="cal-badge">Mehendi</div>
+    </div>
+    <div class="cal-grid">
+     <div class="cal-dname">Sun</div><div class="cal-dname">Mon</div>
+     <div class="cal-dname">Tue</div><div class="cal-dname">Wed</div>
+     <div class="cal-dname">Thu</div><div class="cal-dname">Fri</div>
+     <div class="cal-dname">Sat</div>
+     <div class="cal-d">1</div><div class="cal-d">2</div><div class="cal-d">3</div>
+     <div class="cal-d">4</div><div class="cal-d">5</div><div class="cal-d">6</div>
+     <div class="cal-d">7</div>
+     <div class="cal-d">8</div><div class="cal-d">9</div><div class="cal-d">10</div>
+     <div class="cal-d">11</div><div class="cal-d">12</div><div class="cal-d">13</div>
+     <div class="cal-d">14</div>
+     <div class="cal-d">15</div><div class="cal-d">16</div><div class="cal-d">17</div>
+     <div class="cal-d">18</div><div class="cal-d">19</div><div class="cal-d">20</div>
+     <div class="cal-d">21</div>
+     <div class="cal-d">22</div><div class="cal-d">23</div><div class="cal-d">24</div>
+     <div class="cal-d">25</div><div class="cal-d">26</div><div class="cal-d hi">27</div>
+     <div class="cal-d">28</div>
+     <div class="cal-d">29</div><div class="cal-d">30</div>
+     <div class="cal-d dim"></div><div class="cal-d dim"></div><div class="cal-d dim"></div>
+     <div class="cal-d dim"></div><div class="cal-d dim"></div>
+    </div>
+   </div>
+
+   <button type="button" class="cal-add se d2" id="calAdd">📅 Add to your calendar</button>
+
+   <!-- Time -->
+   <div class="time-row se d3">
+    <div class="time-box">
+     <span class="tlbl">Arrival</span>
+     <span class="tval">7:00 PM</span>
+    </div>
+    <div class="time-box">
+     <span class="tlbl">Dinner</span>
+     <span class="tval">9:00 PM</span>
+    </div>
+   </div>
+
+   <!-- Venue -->
+   <div class="venue-row se d4">
+    <div class="venue-text">
+     <span class="venue-lbl">Venue</span>
+     <div class="venue-name">Falcon Club</div>
+     <a class="venue-link" href="https://share.google/umlR08ORWEUHlKm3E" target="_blank" rel="noopener">📍 View on Maps</a>
+    </div>
+    <div class="qr">
+     <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fshare.google%2FumlR08ORWEUHlKm3E&bgcolor=FFFFFF&color=000000&margin=4&qzone=1&ecc=H" alt="Scan for map" loading="lazy" />
+    </div>
+   </div>
+   </div><!-- /s3-scroll -->
+
+  </div><!-- /s3 -->
+
+  <!-- ══ SLIDE 4 — BLESSING (centered) ══ -->
+  <div class="slide" id="s4">
+   <div class="slide-pts"></div>
+
+   <!-- Mosque silhouette -->
+   <div class="mosque">
+    <svg viewBox="0 0 1000 380" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+     <path d="M0 380 L0 295 C55 278 110 265 165 292 C225 258 310 242 375 272 C408 254 448 248 500 267 C552 248 592 254 625 272 C690 242 775 258 835 292 C890 265 945 278 1000 295 L1000 380 Z" fill="rgba(218,210,196,.28)"/>
+     <rect x="48" y="347" width="904" height="16" rx="3" fill="rgba(232,116,12,.13)"/>
+     <rect x="75" y="342" width="850" height="7" rx="2" fill="rgba(232,116,12,.08)"/>
+     <rect x="58" y="42" width="26" height="305" rx="5" fill="rgba(232,116,12,.15)"/>
+     <rect x="50" y="186" width="42" height="8" rx="4" fill="rgba(232,116,12,.22)"/>
+     <polygon points="58,42 71,10 84,42" fill="rgba(232,116,12,.24)"/>
+     <path d="M69 7 A7 7 0 1 1 73 7 A5 5 0 1 0 69 7 Z" fill="rgba(232,116,12,.45)"/>
+     <rect x="242" y="135" width="17" height="212" rx="4" fill="rgba(232,116,12,.13)"/>
+     <polygon points="242,135 250.5,112 259,135" fill="rgba(232,116,12,.22)"/>
+     <rect x="84" y="258" width="158" height="89" rx="3" fill="rgba(232,116,12,.06)"/>
+     <path d="M96,258 Q112,238 128,258 M128,258 Q144,238 160,258 M160,258 Q176,238 192,258 M192,258 Q208,238 224,258" fill="none" stroke="rgba(232,116,12,.18)" stroke-width="1.3"/>
+     <polygon points="296,347 500,72 704,347" fill="rgba(232,116,12,.1)" stroke="rgba(232,116,12,.17)" stroke-width="1.4"/>
+     <path d="M358 347 Q358 252 500 190 Q642 252 642 347" fill="none" stroke="rgba(232,116,12,.14)" stroke-width="1"/>
+     <path d="M499,65 A9,9 0 1,1 511,65 A7,7 0 1,0 499,65 Z" fill="rgba(232,116,12,.46)"/>
+     <rect x="758" y="258" width="158" height="89" rx="3" fill="rgba(232,116,12,.06)"/>
+     <path d="M776,258 Q792,238 808,258 M808,258 Q824,238 840,258 M840,258 Q856,238 872,258 M872,258 Q888,238 904,258" fill="none" stroke="rgba(232,116,12,.18)" stroke-width="1.3"/>
+     <rect x="741" y="135" width="17" height="212" rx="4" fill="rgba(232,116,12,.13)"/>
+     <polygon points="741,135 749.5,112 758,135" fill="rgba(232,116,12,.22)"/>
+     <rect x="916" y="42" width="26" height="305" rx="5" fill="rgba(232,116,12,.15)"/>
+     <rect x="908" y="186" width="42" height="8" rx="4" fill="rgba(232,116,12,.22)"/>
+     <polygon points="916,42 929,10 942,42" fill="rgba(232,116,12,.24)"/>
+     <path d="M927 7 A7 7 0 1 1 931 7 A5 5 0 1 0 927 7 Z" fill="rgba(232,116,12,.45)"/>
+     <ellipse cx="500" cy="362" rx="380" ry="5" fill="rgba(232,116,12,.04)"/>
+    </svg>
+   </div>
+
+   <div class="s4-scroll">
+   <div class="s4-dua se">
+    <div class="ar">رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ</div>
+    <div class="en">"Our Lord, grant us spouses and offspring<br/>who will be the comfort of our eyes"</div>
+    <div class="ref">Holy Quran · 25:74</div>
+   </div>
+
+   <div class="s4-div se d2">
+    <div class="gdiv"><span class="l"></span>
+     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.2-9C1 8.4 2.6 5 6 5c2 0 3.2 1.2 4 2.4C10.8 6.2 12 5 14 5c3.4 0 5 3.4 3.2 7-2.2 4.5-9.2 9-9.2 9z"/></svg>
+    <span class="r"></span></div>
+   </div>
+
+   <div class="s4-body se d3">
+    <p class="msg">Join us for an evening of henna, music and joy<br/>as we celebrate our son.<br/>Remember him in your prayers.</p>
+    <span class="await">We await your gracious presence</span>
+    <span class="sig">Moqeet ul Hassan</span>
+    <span class="dt">Friday, 27 November 2026</span>
+   </div>
+
+   <button class="s4-dl se d4" id="s4-dl-btn" aria-label="Download invitation as PDF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+     <polyline points="7 10 12 15 17 10"/>
+     <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Save as PDF
+   </button>
+
+   </div><!-- /s4-scroll -->
+
+  </div><!-- /s4 -->
+
+  </div><!-- /reel -->
+
+  <!-- NAV: dots + play-pause -->
+  <div id="nav-row">
+   <button class="dot active" data-idx="0" aria-label="Slide 1"></button>
+   <button class="dot" data-idx="1" aria-label="Slide 2"></button>
+   <button class="dot" data-idx="2" aria-label="Slide 3"></button>
+   <button class="dot" data-idx="3" aria-label="Slide 4"></button>
+   <button class="nav-icon-btn" id="play-btn" aria-label="Pause auto-play">
+    <svg id="play-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+     <rect x="6" y="4" width="4" height="16" rx="1"/>
+     <rect x="14" y="4" width="4" height="16" rx="1"/>
+    </svg>
+   </button>
+   <button class="nav-icon-btn" id="dl-btn" aria-label="Download invitation as PDF">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+     <polyline points="7 10 12 15 17 10"/>
+     <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+   </button>
+   <button class="nav-icon-btn" id="trk-btn" aria-label="Switch music track">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+     <path d="M9 18V5l12-2v13"/>
+     <circle cx="6" cy="18" r="3"/>
+     <circle cx="18" cy="16" r="3"/>
+    </svg>
+   </button>
+   <div class="trk-toast" id="trk-toast"></div>
+  </div>
+
+ </div><!-- /card -->
+
+ <!-- Sound button outside card -->
+ <button id="snd" aria-label="Toggle music">
+  <svg id="snd-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+   <path d="M11 5 6 9H3v6h3l5 4z"/>
+   <path d="M16 9a4 4 0 0 1 0 6"/>
+   <path d="M19 6a8 8 0 0 1 0 12"/>
+  </svg>
+ </button>
+</div><!-- /stage -->
+
+<audio id="bg-music" src="wedding-assets/perfect.mp3" loop preload="auto"></audio>
+
+<script>
+(function () {
+  var reel   = document.getElementById('reel');
+  var slides = document.querySelectorAll('.slide');
+  var dots   = document.querySelectorAll('.dot');
+  var playBtn  = document.getElementById('play-btn');
+  var playIcon = document.getElementById('play-icon');
+  var currentIdx  = 0;
+  var autoPlaying = true;
+  var autoTimer   = null;
+  var SLIDE_DELAY = 5000; // 5 seconds per slide
+
+  /* ── Gold particles on all slides ── */
+  (function makeParticles() {
+    document.querySelectorAll('.slide-pts').forEach(function(box) {
+      for (var i = 0; i < 36; i++) {
+        var p = document.createElement('div');
+        p.className = 'gp';
+        /* Mix of sizes: most mid-range, some large, a few tiny */
+        var r = Math.random();
+        var sz = r < 0.15 ? (14 + Math.random() * 10)   /* large: 14-24px */
+               : r < 0.55 ? (6  + Math.random() * 8)    /* mid:   6-14px  */
+               :             (2  + Math.random() * 4);   /* small: 2-6px   */
+        p.style.cssText = [
+          'left:'  + (Math.random() * 100) + '%',
+          'bottom:'+ (Math.random() * 100) + '%',
+          'width:' + sz + 'px', 'height:' + sz + 'px',
+          'animation-delay:'    + (Math.random() * 14) + 's',
+          'animation-duration:' + (11 + Math.random() * 10) + 's',
+          'opacity:' + (.08 + Math.random() * .45),
+        ].join(';');
+        box.appendChild(p);
+      }
+    });
+  })();
+
+  /* ── Slide entrance animations ── */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.se').forEach(function (el) { el.classList.add('show'); });
+      }
+    });
+  }, { threshold: 0.38, root: reel });
+  slides.forEach(function (s) { io.observe(s); });
+
+  /* trigger slide 1 immediately on load */
+  setTimeout(function () {
+    document.querySelectorAll('#s1 .se').forEach(function (el) { el.classList.add('show'); });
+  }, 260);
+
+  /* ── Auto-play ── */
+  var pauseSVG = '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>';
+  var playSVG  = '<polygon points="5,3 19,12 5,21"/>';
+
+  function goTo(idx) {
+    currentIdx = ((idx % 4) + 4) % 4;
+    reel.scrollTo({ left: currentIdx * reel.offsetWidth, behavior: 'smooth' });
+    syncDots();
+  }
+
+  function syncDots() {
+    dots.forEach(function (d, i) { d.classList.toggle('active', i === currentIdx); });
+  }
+
+  function startAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(function () {
+      goTo(currentIdx + 1);
+    }, SLIDE_DELAY);
+  }
+
+  function stopAuto() {
+    clearInterval(autoTimer);
+    autoTimer = null;
+  }
+
+  /* shared: applies autoPlaying state to timer + music icon + button */
+  function applyPlayState() {
+    playIcon.innerHTML = autoPlaying ? pauseSVG : playSVG;
+    playBtn.setAttribute('aria-label', autoPlaying ? 'Pause auto-play' : 'Resume auto-play');
+    if (autoPlaying) {
+      startAuto();
+      if (musicOn) musicFade(0.75);
+    } else {
+      stopAuto();
+      musicFade(0);
+    }
+  }
+
+  playBtn.addEventListener('click', function () {
+    autoPlaying = !autoPlaying;
+    applyPlayState();
+  });
+
+  /* dots click */
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function () {
+      goTo(+dot.dataset.idx);
+      if (autoPlaying) startAuto(); /* reset timer */
+    });
+  });
+
+  /* scroll sync (debounced) */
+  var scrollDebounce = null;
+  reel.addEventListener('scroll', function () {
+    clearTimeout(scrollDebounce);
+    scrollDebounce = setTimeout(function () {
+      var idx = Math.round(reel.scrollLeft / reel.offsetWidth);
+      if (idx !== currentIdx) {
+        currentIdx = idx;
+        syncDots();
+        if (autoPlaying) startAuto(); /* reset timer after manual swipe */
+      }
+    }, 120);
+  }, { passive: true });
+
+  /* kick off auto-play — wait for slide 1 background image to be ready */
+  var bgImg = document.querySelector('.s1-bg img'); /* couple-back-islamic.png */
+  if (bgImg && bgImg.complete) {
+    startAuto();
+  } else if (bgImg) {
+    bgImg.addEventListener('load',  startAuto, { once: true });
+    bgImg.addEventListener('error', startAuto, { once: true });
+  } else {
+    startAuto();
+  }
+
+  /* ── Background music — multiple tracks ── */
+  var tracks = [
+    { src: 'wedding-assets/music.mpeg',  label: 'Nasheed' },
+    { src: 'wedding-assets/perfect.mp3', label: 'Perfect · Ed Sheeran' }
+  ];
+  var trackIdx  = 1;
+  var bgMusic   = document.getElementById('bg-music');
+  var musicOn   = true;
+  var musicFadeIv = null;
+
+  function musicFade(targetVol) {
+    clearInterval(musicFadeIv);
+    if (targetVol > 0 && bgMusic.paused) {
+      bgMusic.play().catch(function () {});
+    }
+    var step = targetVol > bgMusic.volume ? 0.04 : -0.04;
+    musicFadeIv = setInterval(function () {
+      var next = bgMusic.volume + step;
+      if ((step > 0 && next >= targetVol) || (step < 0 && next <= targetVol)) {
+        bgMusic.volume = targetVol;
+        clearInterval(musicFadeIv);
+        if (targetVol === 0) bgMusic.pause();
+      } else {
+        bgMusic.volume = next;
+      }
+    }, 40);
+  }
+
+  function startMusic() {
+    if (!musicOn) return;
+    bgMusic.volume = 0;
+    musicFade(0.75);
+  }
+
+  /* Browsers block audio-with-sound autoplay, but muted autoplay is always
+     allowed. Start the track muted the instant the invitation is ready, then
+     force-unmute half a second later. Most browsers allow this; if one blocks
+     the programmatic unmute (pausing playback), musicStarted is rolled back
+     so the first real tap still starts the music, via the tap-hint fallback. */
+  var tapHintTimer = null;
+  function primeMutedAutoplay() {
+    if (!musicOn) return;
+    bgMusic.muted = true;
+    var p = bgMusic.play();
+    if (p && typeof p.catch === 'function') p.catch(function () {});
+    showTapHint();
+
+    setTimeout(function () {
+      if (musicStarted || !musicOn) return;
+      bgMusic.muted = false;
+      startMusic();
+      setTimeout(function () {
+        if (bgMusic.paused) {
+          bgMusic.muted = true; /* browser blocked the unmute — wait for a real tap */
+        } else {
+          musicStarted = true;
+          hideTapHint();
+        }
+      }, 150);
+    }, 500);
+  }
+
+  function showTapHint() {
+    var hint = document.getElementById('tap-hint');
+    var snd  = document.getElementById('snd');
+    if (hint) hint.classList.add('show');
+    if (snd)  snd.classList.add('pulse');
+    clearTimeout(tapHintTimer);
+    tapHintTimer = setTimeout(hideTapHint, 6000);
+  }
+
+  function hideTapHint() {
+    clearTimeout(tapHintTimer);
+    var hint = document.getElementById('tap-hint');
+    var snd  = document.getElementById('snd');
+    if (hint) hint.classList.remove('show');
+    if (snd)  snd.classList.remove('pulse');
+  }
+
+  function showTrackToast(label) {
+    var toast = document.getElementById('trk-toast');
+    toast.textContent = label;
+    toast.classList.add('show');
+    clearTimeout(toast._tid);
+    toast._tid = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+  }
+
+  document.getElementById('trk-btn').addEventListener('click', function () {
+    trackIdx = (trackIdx + 1) % tracks.length;
+    var wasPlaying = !bgMusic.paused;
+    clearInterval(musicFadeIv);
+    bgMusic.pause();
+    bgMusic.src = tracks[trackIdx].src;
+    bgMusic.load();
+    if (wasPlaying && musicOn) {
+      bgMusic.volume = 0;
+      bgMusic.play().catch(function () {});
+      musicFade(0.75);
+    }
+    showTrackToast(tracks[trackIdx].label);
+  });
+
+  var sndOn  = '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M19 6a8 8 0 0 1 0 12"/>';
+  var sndOff = '<path d="M11 5 6 9H3v6h3l5 4z"/><path d="M22 9l-6 6"/><path d="M16 9l6 6"/>';
+  var sndIcon = document.getElementById('snd-icon');
+
+  document.getElementById('snd').addEventListener('click', function () {
+    musicOn = !musicOn;
+    sndIcon.innerHTML = musicOn ? sndOn : sndOff;
+    if (musicOn) { musicFade(0.75); }
+    else { musicFade(0); }
+  });
+
+  /* ── Self-heal images that fail to load ──
+     Some mobile browsers (notably Safari) occasionally fail a same-origin
+     image request once — stale edge cache, memory pressure, a preload/fetch
+     race — even though the resource is fine. Retry with a cache-busting
+     query param before giving up, so a one-off failure doesn't leave a
+     guest looking at a broken-image icon. */
+  document.querySelectorAll('img').forEach(function (img) {
+    var retries = 0;
+    img.addEventListener('error', function () {
+      if (retries >= 2) return;
+      retries++;
+      var base = img.src.split('?')[0];
+      setTimeout(function () {
+        img.src = base + '?retry=' + retries + '-' + Date.now();
+      }, 400 * retries);
+    });
+  });
+
+  /* ── Preload photos + default music track, then reveal the invitation ── */
+  (function preloadAndReveal() {
+    var loader = document.getElementById('loader');
+    var stage  = document.getElementById('stage');
+    var pending = 0;
+    var settled = false;
+
+    function checkDone() {
+      if (settled || pending > 0) return;
+      settled = true;
+      stage.classList.add('ready');
+      loader.classList.add('hide');
+      primeMutedAutoplay();
+    }
+
+    function track(el, events) {
+      pending++;
+      var done = false;
+      function fin() {
+        if (done) return;
+        done = true;
+        pending--;
+        checkDone();
+      }
+      events.forEach(function (ev) { el.addEventListener(ev, fin, { once: true }); });
+    }
+
+    document.querySelectorAll('.s1-bg img, .s2-photo img').forEach(function (img) {
+      if (!(img.complete && img.naturalWidth > 0)) track(img, ['load', 'error']);
+    });
+
+    if (bgMusic.readyState < 3 /* HAVE_FUTURE_DATA */) {
+      track(bgMusic, ['canplaythrough', 'error']);
+      bgMusic.load();
+    }
+
+    /* never block the invitation for more than 5s (e.g. mobile browsers that
+       refuse to buffer audio before a user gesture) */
+    setTimeout(function () { pending = 0; checkDone(); }, 5000);
+
+    checkDone();
+  })();
+
+  /* big PDF button on slide 4 delegates to the nav-row icon; the video button
+     is a plain static-file download link, so it needs no JS at all */
+  document.getElementById('s4-dl-btn').addEventListener('click', function () {
+    document.getElementById('dl-btn').click();
+  });
+
+  /* first interaction anywhere unmutes the already-playing track; card taps
+     after that toggle play/pause */
+  var musicStarted = false;
+  var musicStartTs  = 0;
+  document.addEventListener('pointerdown', function () {
+    hideTapHint();
+    if (!musicStarted && musicOn) {
+      musicStarted = true;
+      musicStartTs  = Date.now();
+      bgMusic.muted = false;
+      startMusic();
+    }
+  }, { once: true });
+
+  document.getElementById('card').addEventListener('click', function (e) {
+    if (e.target.closest('#nav-row')) return;
+    /* if this click was the gesture that started music, don't also toggle play/pause */
+    if (Date.now() - musicStartTs < 400) return;
+    autoPlaying = !autoPlaying;
+    applyPlayState();
+  });
+
+  /* ── Download all slides as PDF ── */
+  var dlBtn = document.getElementById('dl-btn');
+  var dlDownSVG  = '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>';
+  var dlSpinSVG  = '<circle cx="12" cy="12" r="9" stroke-dasharray="28 56"/><polyline points="12 6 12 12 15 14"/>';
+
+  function loadScript(src, cb) {
+    if (document.querySelector('script[src="' + src + '"]')) { cb(); return; }
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = cb;
+    document.head.appendChild(s);
+  }
+
+  dlBtn.addEventListener('click', function () {
+    if (dlBtn.disabled) return;
+    dlBtn.disabled = true;
+    clearInterval(autoTimer);
+    dlBtn.querySelector('svg').innerHTML = dlSpinSVG;
+
+    function resetDlBtn() {
+      dlBtn.querySelector('svg').innerHTML = dlDownSVG;
+      dlBtn.disabled = false;
+      if (autoPlaying) startAuto();
+    }
+
+    function doCapture() {
+      var card = document.getElementById('card');
+      var W    = card.offsetWidth;
+      var H    = card.offsetHeight;
+      var mmW  = W * (25.4 / 96);   /* px → mm at 96 dpi */
+      var mmH  = H * (25.4 / 96);
+      var pdf  = new window.jspdf.jsPDF({
+        orientation: H >= W ? 'portrait' : 'landscape',
+        unit: 'mm',
+        format: [mmW, mmH]
+      });
+      var slideEls = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+      var idx = 0;
+
+      function captureNext() {
+        if (idx >= slideEls.length) {
+          try { pdf.save('Mehendi-Invitation-Moqeet.pdf'); }
+          catch (e) { alert('Allow popups to enable PDF download.'); }
+          resetDlBtn();
+          return;
+        }
+
+        /* Clone the slide into an isolated off-screen container so html2canvas
+           never has to deal with the scrollable reel. The container gets
+           container-type:inline-size so cqw units resolve to the correct width. */
+        var tmp = document.createElement('div');
+        tmp.style.cssText = [
+          'position:fixed', 'left:0', 'top:100vh',
+          'width:' + W + 'px', 'height:' + H + 'px',
+          'overflow:hidden', 'z-index:9999',
+          'container-type:inline-size'
+        ].join(';');
+        document.body.appendChild(tmp);
+
+        var clone = slideEls[idx].cloneNode(true);
+        clone.style.cssText = 'width:100%;height:100%;position:relative;flex:none;';
+        /* show entrance-animation elements */
+        Array.prototype.forEach.call(clone.querySelectorAll('.se'), function (el) {
+          el.classList.add('show');
+        });
+        /* freeze particles (keeps PDF clean) */
+        Array.prototype.forEach.call(clone.querySelectorAll('.gp'), function (p) {
+          p.style.display = 'none';
+        });
+        tmp.appendChild(clone);
+
+        /* wait for images inside the clone to finish loading */
+        var imgs    = Array.prototype.slice.call(clone.querySelectorAll('img'));
+        var pending = imgs.filter(function (i) { return !i.complete; });
+        var done    = 0;
+
+        function proceed() {
+          html2canvas(tmp, {
+            useCORS: true,
+            scale: 3,
+            logging: false,
+            backgroundColor: '#FDF8F1',
+            width: W, height: H,
+            scrollX: 0, scrollY: 0,
+            windowWidth: W, windowHeight: H
+          }).then(function (canvas) {
+            if (document.body.contains(tmp)) document.body.removeChild(tmp);
+            var imgData = canvas.toDataURL('image/jpeg', 0.97);
+            if (idx > 0) pdf.addPage([mmW, mmH]);
+            pdf.addImage(imgData, 'JPEG', 0, 0, mmW, mmH, '', 'NONE');
+            idx++;
+            captureNext();
+          }).catch(function (err) {
+            console.error('Slide ' + idx + ' capture error:', err);
+            if (document.body.contains(tmp)) document.body.removeChild(tmp);
+            idx++;
+            captureNext();
+          });
+        }
+
+        if (pending.length === 0) {
+          setTimeout(proceed, 80);
+        } else {
+          pending.forEach(function (img) {
+            function onDone() {
+              if (++done >= pending.length) setTimeout(proceed, 80);
+            }
+            img.addEventListener('load',  onDone, { once: true });
+            img.addEventListener('error', onDone, { once: true });
+          });
+        }
+      }
+
+      captureNext();
+    }
+
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', function () {
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', function () {
+        if (!window.html2canvas || !window.jspdf) {
+          alert('Could not load capture libraries. Check your internet connection.');
+          resetDlBtn();
+          return;
+        }
+        /* make sure the Arabic/display webfonts are fully loaded before the
+           first screenshot, or the Bismillah etc. render with a fallback
+           font that breaks its ligatures */
+        document.fonts.ready.then(doCapture);
+      });
+    });
+  });
+
+  /* ── Add to calendar: .ics with 1-day-before reminder.
+     7:00 PM PKT (UTC+5) = 14:00 UTC ── */
+  var calBtn = document.getElementById('calAdd');
+  if (calBtn) calBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var ics = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Moqeet//Mehendi//EN',
+      'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:moqeet-mehendi-20261127@moqeetulhassan.netlify.app',
+      'DTSTAMP:20261019T000000Z',
+      'DTSTART:20261127T140000Z',
+      'DTEND:20261127T180000Z',
+      "SUMMARY:Moqeet's Mehendi",
+      'LOCATION:Falcon Club',
+      'URL:https://share.google/umlR08ORWEUHlKm3E',
+      'BEGIN:VALARM', 'ACTION:DISPLAY', "DESCRIPTION:Moqeet's Mehendi tomorrow",
+      'TRIGGER:-P1D', 'END:VALARM',
+      'END:VEVENT', 'END:VCALENDAR'
+    ].join('\r\n');
+    var url = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+    var a = document.createElement('a');
+    a.href = url; a.download = 'moqeets-mehendi.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  });
+
+})();
+</script>
+</body>
+</html>
