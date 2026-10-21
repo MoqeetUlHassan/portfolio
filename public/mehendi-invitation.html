@@ -880,7 +880,7 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
      <line x1="12" y1="15" x2="12" y2="3"/>
     </svg>
    </button>
-   <button class="nav-icon-btn" id="trk-btn" aria-label="Switch music track">
+   <button class="nav-icon-btn" id="trk-btn" hidden style="display:none" aria-label="Switch music track">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
      <path d="M9 18V5l12-2v13"/>
      <circle cx="6" cy="18" r="3"/>
@@ -902,7 +902,7 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
  </button>
 </div><!-- /stage -->
 
-<audio id="bg-music" src="wedding-assets/perfect.mp3" loop preload="auto"></audio>
+<audio id="bg-music" src="mehendi-assets/softly.mp3#t=15" preload="auto"></audio>
 
 <script>
 (function () {
@@ -1034,11 +1034,19 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
 
   /* ── Background music — multiple tracks ── */
   var tracks = [
-    { src: 'wedding-assets/music.mpeg',  label: 'Nasheed' },
-    { src: 'wedding-assets/perfect.mp3', label: 'Perfect · Ed Sheeran' }
+    { src: 'mehendi-assets/softly.mp3', label: 'Softly' }
   ];
-  var trackIdx  = 1;
+  var trackIdx  = 0;
   var bgMusic   = document.getElementById('bg-music');
+  /* song starts (and loops back) at 15s */
+  var MUSIC_START = 15;
+  bgMusic.addEventListener('loadedmetadata', function () {
+    if (bgMusic.currentTime < MUSIC_START) bgMusic.currentTime = MUSIC_START;
+  });
+  bgMusic.addEventListener('ended', function () {
+    bgMusic.currentTime = MUSIC_START;
+    bgMusic.play().catch(function () {});
+  });
   var musicOn   = true;
   var musicFadeIv = null;
 
