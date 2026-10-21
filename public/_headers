@@ -1,0 +1,4 @@
+/wedding-assets/*
+  Cache-Control: public, max-age=604800
+/mehendi-assets/*
+  Cache-Control: public, max-age=604800

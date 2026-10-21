@@ -32,13 +32,6 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
   background:radial-gradient(ellipse 130% 110% at 50% 40%,#FFE27A 0%,#F59BB8 100%);
   transition:opacity .6s ease}
 #loader.hide{opacity:0;pointer-events:none}
-#open-btn{display:none;padding:14px 34px;border:0;border-radius:999px;cursor:pointer;
-  background:var(--g);color:#fff;font-family:var(--fc);font-size:clamp(14px,1.6cqw,20px);
-  letter-spacing:.2em;text-transform:uppercase;box-shadow:0 6px 20px rgba(0,0,0,.15);
-  animation:open-pulse 1.6s ease-in-out infinite}
-@keyframes open-pulse{50%{transform:scale(1.05)}}
-#loader.ready .loader-ring,#loader.ready .loader-txt{display:none}
-#loader.ready #open-btn{display:block}
 .loader-ring{width:38px;height:38px;border-radius:50%;
   border:2px solid rgba(232,116,12,.25);border-top-color:var(--g);
   animation:ldr-spin .9s linear infinite}
@@ -527,7 +520,6 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
 <div id="loader">
  <div class="loader-ring"></div>
  <div class="loader-txt">Preparing your invitation</div>
- <button id="open-btn" type="button">Open invitation</button>
 </div>
 <div id="stage">
  <div id="card">
@@ -1165,55 +1157,65 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
   (function preloadAndReveal() {
     var loader = document.getElementById('loader');
     var stage  = document.getElementById('stage');
-    var openBtn = document.getElementById('open-btn');
-    var pending = 0;
+    var txt    = loader.querySelector('.loader-txt');
     var settled = false;
 
-    function checkDone() {
-      if (settled || pending > 0) return;
+    function reveal() {
+      if (settled) return;
       settled = true;
-      loader.classList.add('ready');
-      openBtn.addEventListener('click', function () {
-        stage.classList.add('ready');
-        loader.classList.add('hide');
-        musicStarted = true;
-        musicStartTs = Date.now();
-        if (musicOn) {
-          bgMusic.muted = false;
-          bgMusic.currentTime = 0;
-          bgMusic.play().catch(function () {});
-          startMusic();
-        }
-        startAuto();
-      }, { once: true });
+      stage.classList.add('ready');
+      loader.classList.add('hide');
+      primeMutedAutoplay();
+      startAuto();
     }
 
-    function track(el, events) {
-      pending++;
-      var done = false;
-      function fin() {
-        if (done) return;
-        done = true;
-        pending--;
-        checkDone();
-      }
-      events.forEach(function (ev) { el.addEventListener(ev, fin, { once: true }); });
-    }
-
+    /* fully download the photos and the song before opening, so nothing
+       arrives late on slow connections (audio <preload> alone is ignored by
+       many mobile browsers, so fetch it; the <audio> then plays from cache) */
+    var urls = [];
     document.querySelectorAll('.s1-bg img, .s2-photo img').forEach(function (img) {
-      if (!(img.complete && img.naturalWidth > 0)) track(img, ['load', 'error']);
+      urls.push(img.getAttribute('src'));
     });
+    urls.push(bgMusic.getAttribute('src').split('#')[0]);
 
-    if (bgMusic.readyState < 3 /* HAVE_FUTURE_DATA */) {
-      track(bgMusic, ['canplay', 'error']);
-      bgMusic.load();
+    var got = 0, total = 0, sizes = urls.map(function () { return 0; });
+    function progress() {
+      if (total) txt.textContent = 'Preparing your invitation ' + Math.min(99, Math.floor(got / total * 100)) + '%';
     }
 
-    /* never block the invitation for more than 5s (e.g. mobile browsers that
-       refuse to buffer audio before a user gesture) */
-    setTimeout(function () { pending = 0; checkDone(); }, 8000);
+    function fetchFull(url, i) {
+      return fetch(url).then(function (res) {
+        var len = +res.headers.get('content-length') || 0;
+        total += len; sizes[i] = len;
+        if (!res.body || !res.body.getReader) return res.blob();
+        var reader = res.body.getReader();
+        return (function pump() {
+          return reader.read().then(function (r) {
+            if (r.done) return;
+            got += r.value.length;
+            progress();
+            return pump();
+          });
+        })();
+      }).catch(function () {});
+    }
 
-    checkDone();
+    function imgReady(img) {
+      if (img.complete && img.naturalWidth > 0) return Promise.resolve();
+      return new Promise(function (res) {
+        img.addEventListener('load', res, { once: true });
+        img.addEventListener('error', res, { once: true });
+      });
+    }
+
+    Promise.all(urls.map(fetchFull)).then(function () {
+      bgMusic.load();
+      return Promise.all(Array.prototype.map.call(
+        document.querySelectorAll('.s1-bg img, .s2-photo img'), imgReady));
+    }).then(reveal);
+
+    /* last-resort safety net on very bad connections */
+    setTimeout(reveal, 90000);
   })();
 
   /* big PDF button on slide 4 delegates to the nav-row icon; the video button
