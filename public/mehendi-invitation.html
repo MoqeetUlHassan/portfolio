@@ -32,6 +32,13 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
   background:radial-gradient(ellipse 130% 110% at 50% 40%,#FFE27A 0%,#F59BB8 100%);
   transition:opacity .6s ease}
 #loader.hide{opacity:0;pointer-events:none}
+#open-btn{display:none;padding:14px 34px;border:0;border-radius:999px;cursor:pointer;
+  background:var(--g);color:#fff;font-family:var(--fc);font-size:clamp(14px,1.6cqw,20px);
+  letter-spacing:.2em;text-transform:uppercase;box-shadow:0 6px 20px rgba(0,0,0,.15);
+  animation:open-pulse 1.6s ease-in-out infinite}
+@keyframes open-pulse{50%{transform:scale(1.05)}}
+#loader.ready .loader-ring,#loader.ready .loader-txt{display:none}
+#loader.ready #open-btn{display:block}
 .loader-ring{width:38px;height:38px;border-radius:50%;
   border:2px solid rgba(232,116,12,.25);border-top-color:var(--g);
   animation:ldr-spin .9s linear infinite}
@@ -520,6 +527,7 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
 <div id="loader">
  <div class="loader-ring"></div>
  <div class="loader-txt">Preparing your invitation</div>
+ <button id="open-btn" type="button">Open invitation</button>
 </div>
 <div id="stage">
  <div id="card">
@@ -1021,16 +1029,7 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
     }, 120);
   }, { passive: true });
 
-  /* kick off auto-play — wait for slide 1 background image to be ready */
-  var bgImg = document.querySelector('.s1-bg img'); /* cover photo */
-  if (bgImg && bgImg.complete) {
-    startAuto();
-  } else if (bgImg) {
-    bgImg.addEventListener('load',  startAuto, { once: true });
-    bgImg.addEventListener('error', startAuto, { once: true });
-  } else {
-    startAuto();
-  }
+  /* auto-play starts when the guest taps "Open invitation" (see preloadAndReveal) */
 
   /* ── Background music — multiple tracks ── */
   var tracks = [
@@ -1166,15 +1165,27 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
   (function preloadAndReveal() {
     var loader = document.getElementById('loader');
     var stage  = document.getElementById('stage');
+    var openBtn = document.getElementById('open-btn');
     var pending = 0;
     var settled = false;
 
     function checkDone() {
       if (settled || pending > 0) return;
       settled = true;
-      stage.classList.add('ready');
-      loader.classList.add('hide');
-      primeMutedAutoplay();
+      loader.classList.add('ready');
+      openBtn.addEventListener('click', function () {
+        stage.classList.add('ready');
+        loader.classList.add('hide');
+        musicStarted = true;
+        musicStartTs = Date.now();
+        if (musicOn) {
+          bgMusic.muted = false;
+          bgMusic.currentTime = 0;
+          bgMusic.play().catch(function () {});
+          startMusic();
+        }
+        startAuto();
+      }, { once: true });
     }
 
     function track(el, events) {
