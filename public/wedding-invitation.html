@@ -231,8 +231,8 @@ body{font-family:var(--fb);background:#e2f2ea;overflow:hidden;-webkit-font-smoot
 
 /* Photo: fills all remaining height, anchored bottom so feet show at the bottom */
 .s2-photo{position:relative;z-index:3;width:92%;flex:1;min-height:clamp(100px,40cqw,190px)}
-.s2-photo img{width:100%;height:100%;display:block;object-fit:cover;
-  object-position:center 12%;border-radius:4px;user-select:none;pointer-events:none}
+.s2-photo img{width:100%;height:100%;display:block;object-fit:contain;object-position:center bottom;
+  border-radius:4px;user-select:none;pointer-events:none}
 
 /* Floral arch SVG overlay */
 .floral-arch{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
