@@ -505,7 +505,7 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 
    <!-- Full bleed background photo -->
    <div class="s1-bg">
-    <img src="wedding-assets/couple-back-islamic.png" alt="" />
+    <img src="wedding-assets/couple-back-islamic.webp" alt="" />
    </div>
    <!-- White gradient fade overlay, dense at top, ~50% at midpoint -->
    <div class="s1-fade"></div>
@@ -704,7 +704,7 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
 
    <!-- Couple photo — centered in flow, below text, full opacity -->
    <div class="s2-photo se d1">
-    <img src="wedding-assets/couple-front.png" alt="Moqeet &amp; Ayesha" />
+    <img src="wedding-assets/couple-front.webp" alt="Moqeet &amp; Ayesha" />
    </div>
    </div><!-- /s2-scroll -->
 
@@ -1178,63 +1178,43 @@ body{font-family:var(--fb);background:#d6cdc2;overflow:hidden;-webkit-font-smoot
   (function preloadAndReveal() {
     var loader = document.getElementById('loader');
     var stage  = document.getElementById('stage');
-    var txt    = loader.querySelector('.loader-txt');
+    var pending = 0;
     var settled = false;
 
-    function reveal() {
-      if (settled) return;
+    function checkDone() {
+      if (settled || pending > 0) return;
       settled = true;
       stage.classList.add('ready');
       loader.classList.add('hide');
       primeMutedAutoplay();
     }
 
-    /* download every photo + the music fully onto the device (as blobs) before
-       opening, so nothing streams in late on slow connections */
-    var items = [];
+    function track(el, events) {
+      pending++;
+      var done = false;
+      function fin() {
+        if (done) return;
+        done = true;
+        pending--;
+        checkDone();
+      }
+      events.forEach(function (ev) { el.addEventListener(ev, fin, { once: true }); });
+    }
+
     document.querySelectorAll('.s1-bg img, .s2-photo img').forEach(function (img) {
-      items.push({ el: img, url: img.getAttribute('src'), loaded: 0, total: 0 });
+      if (!(img.complete && img.naturalWidth > 0)) track(img, ['load', 'error']);
     });
-    var aSrc = bgMusic.getAttribute('src').split('#');
-    items.push({ el: bgMusic, url: aSrc[0], frag: aSrc[1] ? '#' + aSrc[1] : '', loaded: 0, total: 0 });
 
-    function progress() {
-      var l = 0, t = 0;
-      items.forEach(function (it) { l += it.loaded; t += it.total; });
-      if (t) txt.textContent = 'Preparing your invitation ' + Math.min(99, Math.floor(l / t * 100)) + '%';
+    if (bgMusic.readyState < 3 /* HAVE_FUTURE_DATA */) {
+      track(bgMusic, ['canplay', 'error']);
+      bgMusic.load();
     }
 
-    function fetchFull(it) {
-      return fetch(it.url).then(function (res) {
-        if (!res.ok) throw new Error(res.status);
-        it.total = +res.headers.get('content-length') || 0;
-        if (!res.body || !res.body.getReader) return res.blob();
-        var reader = res.body.getReader(), chunks = [];
-        return (function pump() {
-          return reader.read().then(function (r) {
-            if (r.done) return new Blob(chunks, { type: res.headers.get('content-type') || '' });
-            chunks.push(r.value);
-            it.loaded += r.value.length;
-            progress();
-            return pump();
-          });
-        })();
-      }).then(function (blob) {
-        var u = URL.createObjectURL(blob);
-        if (it.el === bgMusic) {
-          bgMusic.src = u + it.frag;
-          bgMusic.load();
-          return;
-        }
-        it.el.src = u;
-        return it.el.decode ? it.el.decode().catch(function () {}) : null;
-      }).catch(function () { /* keep the network URL as fallback */ });
-    }
+    /* never block the invitation for more than 5s (e.g. mobile browsers that
+       refuse to buffer audio before a user gesture) */
+    setTimeout(function () { pending = 0; checkDone(); }, 8000);
 
-    Promise.all(items.map(fetchFull)).then(reveal);
-
-    /* last-resort safety net on very bad connections */
-    setTimeout(reveal, 60000);
+    checkDone();
   })();
 
   /* big PDF button on slide 4 delegates to the nav-row icon; the video button
