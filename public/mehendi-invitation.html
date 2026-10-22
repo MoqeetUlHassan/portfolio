@@ -1253,16 +1253,8 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
     document.addEventListener(ev, unlockMusic, true);
   });
 
-  var firstCardTap = false;
-  document.getElementById('card').addEventListener('click', function (e) {
-    if (e.target.closest('#nav-row')) return;
-    /* if this click was the gesture that started music, don't also toggle play/pause */
-    if (Date.now() - musicStartTs < 400) return;
-    /* a guest's first tap is how they "unlock" sound on phones — never let it pause */
-    if (!firstCardTap) { firstCardTap = true; return; }
-    autoPlaying = !autoPlaying;
-    applyPlayState();
-  });
+  /* tapping the card never pauses — only the bottom play/pause and sound buttons do;
+     a tap only (re)starts the music via unlockMusic */
 
   /* ── Download all slides as PDF ── */
   var dlBtn = document.getElementById('dl-btn');
