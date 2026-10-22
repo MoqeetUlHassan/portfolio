@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, target-densitydpi=device-dpi" />
-<title>Moqeet ul Hassan &amp; Ayesha Adnan — Nikkah</title>
+<title>Moqeet ul Hassan with Ayesha Adnan — Nikkah</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet" />
@@ -464,8 +464,8 @@ body{font-family:var(--fb);background:#efe9df;overflow:hidden;-webkit-font-smoot
   display:block;margin-top:.6em}
 .s4-body .sig{font-family:var(--fd);font-size:clamp(16px,4cqw,32px);
   color:var(--g);display:block;margin-top:.55em;letter-spacing:.04em}
-.s4-body .dt{font-family:var(--fc);font-size:clamp(16px,2cqw,25px);
-  letter-spacing:.24em;color:rgba(191,155,70,.68);display:block;margin-top:.3em}
+.s4-body .dt{font-family:var(--fc);font-size:clamp(18px,3.4cqw,30px);font-weight:700;
+  letter-spacing:.14em;color:var(--g);display:block;margin-top:.45em}
 
 .rsvp{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:clamp(8px,2.2cqw,14px)}
 .rsvp .rt{font-family:var(--fc);letter-spacing:.2em;font-size:clamp(12px,1.8cqw,18px);color:var(--g)}
@@ -539,7 +539,7 @@ body{font-family:var(--fb);background:#efe9df;overflow:hidden;-webkit-font-smoot
    <div class="s1-names-anchor">
     <div class="s1-names se d4">
      <span class="n">Moqeet ul Hassan</span>
-     <span class="amp">&amp;</span>
+     <span class="amp">with</span>
      <span class="n">Ayesha Adnan</span>
     </div>
    </div>
@@ -693,7 +693,7 @@ body{font-family:var(--fb);background:#efe9df;overflow:hidden;-webkit-font-smoot
     </div>
     <div class="s2-names">
      <span class="groom">Moqeet ul Hassan</span>
-     <span class="amp">&amp;</span>
+     <span class="amp">with</span>
      <span class="bride">Ayesha Adnan</span>
     </div>
     <div class="s2-family">
@@ -834,7 +834,7 @@ body{font-family:var(--fb);background:#efe9df;overflow:hidden;-webkit-font-smoot
    <div class="s4-body se d3">
     <p class="msg">Join us as we celebrate this joyous occasion<br/>and create cherished memories together.<br/>Remember the couple in your prayers.</p>
     <span class="await">We await your gracious presence</span>
-    <span class="sig">Moqeet &amp; Ayesha</span>
+    <span class="sig">Moqeet with Ayesha</span>
     <span class="dt">Sunday, 22 November 2026</span>
    </div>
 
@@ -1224,20 +1224,38 @@ body{font-family:var(--fb);background:#efe9df;overflow:hidden;-webkit-font-smoot
      after that toggle play/pause */
   var musicStarted = false;
   var musicStartTs  = 0;
-  document.addEventListener('pointerdown', function () {
+  /* Phones only allow sound after a real "activation" gesture: touchend /
+     pointerup / click / keydown (a touch pointerdown does NOT count). Listen
+     to all of them, and always call play() so a paused track starts too. */
+  function unlockMusic() {
     hideTapHint();
-    if (!musicStarted && musicOn) {
-      musicStarted = true;
-      musicStartTs  = Date.now();
-      bgMusic.muted = false;
+    if (!musicOn) return;
+    if (!musicStarted) { musicStarted = true; musicStartTs = Date.now(); }
+    bgMusic.muted = false;
+    if (bgMusic.paused) {
+      bgMusic.volume = 0;
+      var p = bgMusic.play();
+      if (p && p.then) p.then(function () {
+        startMusic();
+        ['pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+          document.removeEventListener(ev, unlockMusic, true);
+        });
+      }).catch(function () { musicStarted = false; });
+    } else {
       startMusic();
     }
-  }, { once: true });
+  }
+  ['pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+    document.addEventListener(ev, unlockMusic, true);
+  });
 
+  var firstCardTap = false;
   document.getElementById('card').addEventListener('click', function (e) {
     if (e.target.closest('#nav-row')) return;
     /* if this click was the gesture that started music, don't also toggle play/pause */
     if (Date.now() - musicStartTs < 400) return;
+    /* a guest's first tap is how they "unlock" sound on phones — never let it pause */
+    if (!firstCardTap) { firstCardTap = true; return; }
     autoPlaying = !autoPlaying;
     applyPlayState();
   });
@@ -1386,7 +1404,7 @@ body{font-family:var(--fb);background:#efe9df;overflow:hidden;-webkit-font-smoot
       'DTSTAMP:20261019T000000Z',
       'DTSTART:20261122T080000Z',
       'DTEND:20261122T110000Z',
-      "SUMMARY:Moqeet & Ayesha's Nikkah",
+      "SUMMARY:Moqeet with Ayesha's Nikkah",
       'LOCATION:Islamabad Hotel\\, G-6 Markaz\\, Islamabad\\, Pakistan',
       'URL:https://maps.app.goo.gl/ynDsfu89sU7umU1KA',
       'BEGIN:VALARM', 'ACTION:DISPLAY', "DESCRIPTION:Nikkah tomorrow",

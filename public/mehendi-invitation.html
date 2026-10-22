@@ -464,8 +464,8 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
   display:block;margin-top:.6em}
 .s4-body .sig{font-family:var(--fd);font-size:clamp(16px,4cqw,32px);
   color:var(--g);display:block;margin-top:.55em;letter-spacing:.04em}
-.s4-body .dt{font-family:var(--fc);font-size:clamp(16px,2cqw,25px);
-  letter-spacing:.24em;color:rgba(232,116,12,.68);display:block;margin-top:.3em}
+.s4-body .dt{font-family:var(--fc);font-size:clamp(18px,3.4cqw,30px);font-weight:700;
+  letter-spacing:.14em;color:var(--g);display:block;margin-top:.45em}
 
 .rsvp{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:clamp(8px,2.2cqw,14px)}
 .rsvp .rt{font-family:var(--fc);letter-spacing:.2em;font-size:clamp(12px,1.8cqw,18px);color:var(--g)}
@@ -1228,20 +1228,38 @@ body{font-family:var(--fb);background:#F7C948;overflow:hidden;-webkit-font-smoot
      after that toggle play/pause */
   var musicStarted = false;
   var musicStartTs  = 0;
-  document.addEventListener('pointerdown', function () {
+  /* Phones only allow sound after a real "activation" gesture: touchend /
+     pointerup / click / keydown (a touch pointerdown does NOT count). Listen
+     to all of them, and always call play() so a paused track starts too. */
+  function unlockMusic() {
     hideTapHint();
-    if (!musicStarted && musicOn) {
-      musicStarted = true;
-      musicStartTs  = Date.now();
-      bgMusic.muted = false;
+    if (!musicOn) return;
+    if (!musicStarted) { musicStarted = true; musicStartTs = Date.now(); }
+    bgMusic.muted = false;
+    if (bgMusic.paused) {
+      bgMusic.volume = 0;
+      var p = bgMusic.play();
+      if (p && p.then) p.then(function () {
+        startMusic();
+        ['pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+          document.removeEventListener(ev, unlockMusic, true);
+        });
+      }).catch(function () { musicStarted = false; });
+    } else {
       startMusic();
     }
-  }, { once: true });
+  }
+  ['pointerup', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+    document.addEventListener(ev, unlockMusic, true);
+  });
 
+  var firstCardTap = false;
   document.getElementById('card').addEventListener('click', function (e) {
     if (e.target.closest('#nav-row')) return;
     /* if this click was the gesture that started music, don't also toggle play/pause */
     if (Date.now() - musicStartTs < 400) return;
+    /* a guest's first tap is how they "unlock" sound on phones — never let it pause */
+    if (!firstCardTap) { firstCardTap = true; return; }
     autoPlaying = !autoPlaying;
     applyPlayState();
   });
