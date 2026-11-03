@@ -489,6 +489,20 @@ body{font-family:var(--fb);background:#efe9df;overflow:hidden;-webkit-font-smoot
   background:transparent;color:var(--g);border:1.5px solid var(--g);
   box-shadow:none}
 .s4-dl.outline:hover{opacity:1;background:rgba(191,155,70,.08)}
+
+/* ── DRESS CODE ── */
+.dress{position:relative;z-index:2;width:100%;margin-top:clamp(9px,2.4cqw,19px);
+  border:1px solid var(--g-ln,rgba(79,163,131,.28));border-radius:9px;
+  padding:clamp(11px,3cqw,25px) clamp(12px,3.2cqw,28px);
+  background:rgba(255,255,255,.6);display:flex;align-items:center;gap:clamp(8px,2.4cqw,19px)}
+.dress-text{flex:1;text-align:left}
+.dress-lbl{font-family:var(--fc);font-size:clamp(14px,2cqw,22px);
+  letter-spacing:.28em;text-transform:uppercase;color:var(--g);display:block;margin-bottom:.3em}
+.dress-name{font-family:var(--fb);font-weight:600;font-size:clamp(16px,3.6cqw,29px);color:var(--br);line-height:1.25}
+.dress-note{font-family:var(--fb);font-style:italic;font-size:clamp(12px,2.4cqw,16px);
+  color:var(--br-m);display:block;margin-top:4px;line-height:1.35}
+.dress img{width:clamp(110px,34cqw,200px);height:auto;flex-shrink:0;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.12))}
 </style>
 </head>
 <body>
@@ -780,6 +794,16 @@ body{font-family:var(--fb);background:#efe9df;overflow:hidden;-webkit-font-smoot
     <div class="qr">
      <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fmaps.app.goo.gl%2FynDsfu89sU7umU1KA&bgcolor=FFFFFF&color=000000&margin=4&qzone=1&ecc=H" alt="Scan for map" loading="lazy" />
     </div>
+   </div>
+
+   <!-- Dress code (gents) -->
+   <div class="dress se d4">
+    <div class="dress-text">
+     <span class="dress-lbl">Gents Dress Code</span>
+     <div class="dress-name">Navy Blue Shalwar Kameez</div>
+     <span class="dress-note">with an off-white waistcoat or off-white shawl</span>
+    </div>
+    <img src="nikkah-assets/outfit.webp" alt="Navy Blue Shalwar Kameez" loading="lazy" />
    </div>
    </div><!-- /s3-scroll -->
 
